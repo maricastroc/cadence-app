@@ -32,7 +32,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body, input, textarea, button {
-    font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont,
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont,
       'Segoe UI', sans-serif;
     font-weight: 400;
     font-size: 1rem;
@@ -40,7 +40,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont,
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont,
       'Segoe UI', sans-serif;
     letter-spacing: -0.02em;
   }
