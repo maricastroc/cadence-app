@@ -1,7 +1,7 @@
 import { baseFontSizes } from './base'
 
 export const darkTheme = {
-  'title-color': '#F4F5F7',
+  'title-color': '#F5F5F5',
 
   'primary-color': '#1AA294',
   'primary-hover': '#2BBEAF',
@@ -34,11 +34,11 @@ export const darkTheme = {
   'select-color': '#16161B',
 
   'paragraph-color': '#C7CAD1',
-  'details-color': '#8A8E98',
-  'subtitle-color': '#878B95',
-  'border-color': 'rgba(255, 255, 255, 0.08)',
+  'details-color': '#A1A1AA',
+  'subtitle-color': '#A1A1AA',
+  'border-color': 'rgba(255, 255, 255, 0.06)',
   'cards-color': '#16161B',
-  'bg-color': '#0A0A0C',
+  'bg-color': '#09090B',
   'scroll-color': '#2A2A30',
 
   'light-bg-color': '#16161B',
@@ -48,9 +48,9 @@ export const darkTheme = {
   'due-soon-color': '#E0A53B',
 
   // --- redesign surfaces & accents (C2 / teal) ---
-  'canvas-color': '#0A0A0C',
-  'sidebar-color': '#0D0D11',
-  'panel-color': '#0D0D11',
+  'canvas-color': '#09090B',
+  'sidebar-color': '#0E0E11',
+  'panel-color': '#111216',
   'card-color': '#17181D',
   // hover-fill for menu items / buttons / rows on an elevated surface
   'card-hover': '#1E1F26',
