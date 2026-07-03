@@ -245,13 +245,19 @@ export function useDragAndDrop(
       } else {
         await api.patch(`tasks/${taskId}/reorder`, { new_order: newOrder })
       }
-      await activeBoardMutate()
     } catch (error) {
       setBoardColumns(rollback)
       handleApiError(error)
+      return
     } finally {
       setIsApiProcessing(false)
     }
+
+    // Reconcile with server truth in the background. The optimistic state is
+    // already what the server just persisted, so we don't await the full-board
+    // `/boards/active` refetch here — holding `isApiProcessing` across it froze
+    // every drag (task + column grips) until the request returned.
+    activeBoardMutate()
   }
 
   // Single-list horizontal reorder: the final index is the only thing that
@@ -299,13 +305,16 @@ export function useDragAndDrop(
     setIsApiProcessing(true)
     try {
       await api.patch(`columns/${columnId}/reorder`, { new_order: newOrder })
-      await activeBoardMutate()
     } catch (error) {
       setBoardColumns(rollback)
       handleApiError(error)
+      return
     } finally {
       setIsApiProcessing(false)
     }
+
+    // Background reconciliation — see the note in `commit`.
+    activeBoardMutate()
   }
 
   return {
