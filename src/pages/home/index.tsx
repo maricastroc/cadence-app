@@ -105,6 +105,7 @@ export default function Home() {
     onDragStart,
     onDragOver,
     onDragEnd,
+    onDragCancel,
   } = useDragAndDrop(boardColumns, setBoardColumns)
 
   const sensors = useSensors(
@@ -115,6 +116,11 @@ export default function Home() {
   )
 
   useEffect(() => {
+    // Don't overwrite the board while a drag is in flight: swapping the columns
+    // array mid-drag makes dnd-kit cancel the gesture and can strand the drag
+    // overlay. A refetch landing during a drag is dropped here — the optimistic
+    // state already reflects it, and the next idle change re-syncs.
+    if (activeTask || activeColumn) return
     setBoardColumns(activeBoard?.columns)
   }, [activeBoard])
 
@@ -164,6 +170,7 @@ export default function Home() {
           onDragStart={onDragStart}
           onDragOver={onDragOver}
           onDragEnd={onDragEnd}
+          onDragCancel={onDragCancel}
         >
           <LayoutContainer>
             {isResolvingBoard && <LoadingComponent />}

@@ -120,6 +120,21 @@ describe('useDragAndDrop', () => {
     })
   })
 
+  describe('onDragCancel', () => {
+    it('clears the active overlay item so a cancelled drag never strands it', () => {
+      const { result } = setup()
+      const task = result.current.columns![0].tasks[0]
+
+      act(() => result.current.onDragStart(startTask(task, 1)))
+      expect(result.current.activeTask).toEqual(task)
+
+      act(() => result.current.onDragCancel())
+
+      expect(result.current.activeTask).toBeNull()
+      expect(result.current.activeColumn).toBeNull()
+    })
+  })
+
   describe('onDragOver', () => {
     it('previews a cross-column move by relocating the task into the hovered column', () => {
       const { result } = setup()
@@ -209,7 +224,9 @@ describe('useDragAndDrop', () => {
       expect(mockPatch).toHaveBeenCalledWith('tasks/1/reorder', {
         new_order: 2,
       })
-      expect(mockActiveBoardMutate).toHaveBeenCalled()
+      // The optimistic state is authoritative — no full-board refetch is fired,
+      // which is what previously froze dragging until it returned.
+      expect(mockActiveBoardMutate).not.toHaveBeenCalled()
       expect(result.current.activeTask).toBeNull()
       expect(result.current.isApiProcessing).toBe(false)
     })
@@ -247,7 +264,7 @@ describe('useDragAndDrop', () => {
         new_column_id: 2,
         new_order: 2,
       })
-      expect(mockActiveBoardMutate).toHaveBeenCalled()
+      expect(mockActiveBoardMutate).not.toHaveBeenCalled()
     })
 
     it('does not call the API when the task is dropped in its original spot', async () => {
@@ -341,7 +358,7 @@ describe('useDragAndDrop', () => {
       expect(mockPatch).toHaveBeenCalledWith('columns/1/reorder', {
         new_order: 2,
       })
-      expect(mockActiveBoardMutate).toHaveBeenCalled()
+      expect(mockActiveBoardMutate).not.toHaveBeenCalled()
       expect(result.current.activeColumn).toBeNull()
     })
 

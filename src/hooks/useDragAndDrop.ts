@@ -7,7 +7,6 @@ import {
   DragStartEvent,
 } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
-import { useBoardsContext } from '@/contexts/BoardsContext'
 import { api } from '@/lib/axios'
 import { handleApiError } from '@/utils/handleApiError'
 import { TaskProps } from '@/@types/task'
@@ -43,8 +42,6 @@ export function useDragAndDrop(
   boardColumns: BoardColumnProps[] | undefined,
   setBoardColumns: SetColumns,
 ) {
-  const { activeBoardMutate } = useBoardsContext()
-
   const [activeTask, setActiveTask] = useState<TaskProps | null>(null)
   const [activeColumn, setActiveColumn] = useState<BoardColumnProps | null>(
     null,
@@ -248,16 +245,9 @@ export function useDragAndDrop(
     } catch (error) {
       setBoardColumns(rollback)
       handleApiError(error)
-      return
     } finally {
       setIsApiProcessing(false)
     }
-
-    // Reconcile with server truth in the background. The optimistic state is
-    // already what the server just persisted, so we don't await the full-board
-    // `/boards/active` refetch here — holding `isApiProcessing` across it froze
-    // every drag (task + column grips) until the request returned.
-    activeBoardMutate()
   }
 
   // Single-list horizontal reorder: the final index is the only thing that
@@ -308,13 +298,21 @@ export function useDragAndDrop(
     } catch (error) {
       setBoardColumns(rollback)
       handleApiError(error)
-      return
     } finally {
       setIsApiProcessing(false)
     }
+  }
 
-    // Background reconciliation — see the note in `commit`.
-    activeBoardMutate()
+  // A drag can end without a drop — Escape, a lost pointer, or the underlying
+  // list changing mid-drag (e.g. a background board refetch). dnd-kit fires
+  // this instead of onDragEnd, so we mirror the reset here; otherwise the
+  // `activeTask`/`activeColumn` state would stay set, keeping the DragOverlay
+  // ghost mounted and swallowing pointer events so nothing else can be dragged.
+  const onDragCancel = () => {
+    setActiveTask(null)
+    setActiveColumn(null)
+    dragStart.current = null
+    columnDragStart.current = null
   }
 
   return {
@@ -324,5 +322,6 @@ export function useDragAndDrop(
     onDragStart,
     onDragOver,
     onDragEnd,
+    onDragCancel,
   }
 }
