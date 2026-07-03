@@ -7,8 +7,10 @@ import { AxiosResponse } from 'axios'
 import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -140,33 +142,51 @@ export function BoardsContextProvider({
       })
   }, [activeBoardData, boards, isLoadingActiveBoard])
 
-  const handleEnableScrollFeature = (value: boolean) => {
+  const handleEnableScrollFeature = useCallback((value: boolean) => {
     setEnableScrollFeature(value)
-  }
+  }, [])
 
-  const handleChangeActiveBoard = async (board: BoardProps) => {
-    setActiveBoard(board)
-    await activeBoardMutate()
-  }
+  const handleChangeActiveBoard = useCallback(
+    async (board: BoardProps) => {
+      setActiveBoard(board)
+      await activeBoardMutate()
+    },
+    [activeBoardMutate],
+  )
+
+  // Memoize the context value so consumers (Header, Sidebar, every TaskCard and
+  // BoardColumn) only re-render when a value they read actually changes, not on
+  // every provider render.
+  const value = useMemo(
+    () => ({
+      enableScrollFeature,
+      handleEnableScrollFeature,
+      isLoading,
+      handleChangeActiveBoard,
+      activeBoard,
+      boards,
+      isValidatingBoards,
+      isValidatingActiveBoard,
+      boardsMutate,
+      activeBoardMutate,
+      setActiveBoard,
+      setBoards,
+    }),
+    [
+      enableScrollFeature,
+      handleEnableScrollFeature,
+      isLoading,
+      handleChangeActiveBoard,
+      activeBoard,
+      boards,
+      isValidatingBoards,
+      isValidatingActiveBoard,
+      boardsMutate,
+      activeBoardMutate,
+    ],
+  )
 
   return (
-    <BoardsContext.Provider
-      value={{
-        enableScrollFeature,
-        handleEnableScrollFeature,
-        isLoading,
-        handleChangeActiveBoard,
-        activeBoard,
-        boards,
-        isValidatingBoards,
-        isValidatingActiveBoard,
-        boardsMutate,
-        activeBoardMutate,
-        setActiveBoard,
-        setBoards,
-      }}
-    >
-      {children}
-    </BoardsContext.Provider>
+    <BoardsContext.Provider value={value}>{children}</BoardsContext.Provider>
   )
 }
