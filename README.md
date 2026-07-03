@@ -13,14 +13,14 @@ This repository is the **frontend** (Next.js). It talks to a separate **Laravel 
 **Boards & workflow**
 - Create, edit and delete boards, and switch the active board
 - Customize each board's workflow columns — add, rename and remove (up to 6)
-- Reorder columns by drag-and-drop, with optimistic updates and rollback on failure
+- Reorder columns by drag-and-drop, with optimistic updates persisted in the background
 - Each board gets a deterministic accent color for quick visual identity
 
 **Tasks**
 - Create, edit and delete tasks with title, description and due date
 - Subtasks: add, remove, toggle completion and reorder (animated)
 - Due-date status badges (overdue / due soon / completed), derived from the date and subtask progress
-- Drag and drop to move tasks across columns or reorder within a column — optimistic, with rollback if the request fails
+- Drag and drop to move tasks across columns or reorder within a column — optimistic, persisted in the background so dragging never blocks on the network
 
 **Labels**
 - Create, edit and delete color-coded labels, with per-board usage counts
@@ -139,7 +139,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 Unit and component tests with [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/), focused on the logic most likely to regress:
 
-- **Drag-and-drop engine** (`useDragAndDrop`) — cross-column moves, within-column and column reordering, the move-vs-reorder persistence calls, and rollback when a request fails
+- **Drag-and-drop engine** (`useDragAndDrop`) — cross-column moves, within-column and column reordering, the move-vs-reorder persistence calls, the serialized background persist queue, and server reconciliation when a request fails
 - **Utilities** — due-date status, date formatting, board/column filtering, deterministic board colors, tag colors and API-error handling
 - **Form & UI flows** — login/register validation, the password field, and the delete-confirmation dialog
 
@@ -173,7 +173,7 @@ A few decisions worth calling out:
 
 - **Decoupled SPA + REST API** (Next.js ↔ Laravel/Sanctum) rather than a monolith — which meant owning the cross-origin surface: CORS, credentialed requests and cookie behavior.
 - **Auth in an httpOnly cookie instead of a localStorage token**, so the token is never reachable from JavaScript (XSS can't steal it). The trade-off — cookies aren't sent cross-site — is resolved by serving the API from a subdomain, keeping it *same-site* so a `SameSite=Lax` cookie works across Vercel + Railway.
-- **Optimistic drag-and-drop** for tasks and columns: the UI updates immediately and reconciles with the server, rolling back to the pre-drag snapshot if the request fails. Drag targets are stable string ids (`task-<id>` / `column-<id>`), not array positions, so reordering or filtering can't desync the drop target.
+- **Optimistic drag-and-drop** for tasks and columns: the UI updates immediately and the move is persisted in the **background**, so dragging never blocks on the network — even against a slow API. Writes go through a serialized queue (one at a time) so two overlapping reorders can't race on the server's sibling-shift logic, and a failed write reconciles against server state instead of blindly rolling back (which could clobber a later queued drag). Drag targets are stable string ids (`task-<id>` / `column-<id>`), not array positions, so reordering or filtering can't desync the drop target.
 - **React Context + SWR** for state: SWR owns server data and revalidation, Context holds the active-board selection — separating "what the server says" from "what the user is looking at".
 - A substantial **refactor pass**: extracting reusable hooks and components, removing dead code and de-duplicating the codebase.
 
