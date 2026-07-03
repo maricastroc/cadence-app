@@ -1,4 +1,4 @@
-import { RefObject, useRef, useState } from 'react'
+import { memo, RefObject, useRef, useState } from 'react'
 import {
   SortableContext,
   verticalListSortingStrategy,
@@ -40,7 +40,7 @@ type ColumnProps = BoardColumnProps & {
   dragDisabled: boolean
 }
 
-export function BoardColumn({
+export const BoardColumn = memo(function BoardColumn({
   name,
   tasks,
   column,
@@ -179,7 +179,7 @@ export function BoardColumn({
       </Dialog.Root>
     </>
   )
-}
+})
 
 // Rendered inside the DndContext's <DragOverlay> while a column is being
 // dragged. Purely presentational — no sortable hooks (which would re-register

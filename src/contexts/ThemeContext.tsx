@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { getStorageTheme, saveStorageTheme } from '@/storage/themeConfig'
 
 type ThemeContextType = {
@@ -27,19 +34,20 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     setEnableDarkMode(getStorageTheme() === 'DARK_THEME')
   }, [])
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setEnableDarkMode((prev) => {
       const newTheme = !prev
       saveStorageTheme(newTheme ? 'DARK_THEME' : 'LIGHT_THEME')
       return newTheme
     })
-  }
+  }, [])
 
-  return (
-    <ThemeContext.Provider value={{ enableDarkMode, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
+  const value = useMemo(
+    () => ({ enableDarkMode, toggleTheme }),
+    [enableDarkMode, toggleTheme],
   )
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }
 
 export { ThemeContext }

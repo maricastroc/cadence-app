@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
@@ -43,7 +43,11 @@ type TaskCardProps = {
   dragOverlay?: boolean
 }
 
-export function CardContent({ task }: { task: TaskProps }) {
+export const CardContent = memo(function CardContent({
+  task,
+}: {
+  task: TaskProps
+}) {
   const totalSubtasks = task?.subtasks?.length || 0
   const completedSubtasks =
     task?.subtasks?.filter((subtask) => subtask?.is_completed)?.length || 0
@@ -139,9 +143,9 @@ export function CardContent({ task }: { task: TaskProps }) {
       </InfoContent>
     </>
   )
-}
+})
 
-export function TaskCard({
+export const TaskCard = memo(function TaskCard({
   task,
   column,
   dragDisabled,
@@ -216,4 +220,4 @@ export function TaskCard({
       />
     </Dialog.Root>
   )
-}
+})

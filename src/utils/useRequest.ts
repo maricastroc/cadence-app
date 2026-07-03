@@ -1,6 +1,7 @@
 // https://github.com/vercel/swr/blob/main/examples/axios-typescript/libs/useRequest.ts
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr'
 import { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
+import { useMemo } from 'react'
 import { api } from '@/lib/axios'
 
 export type GetRequest = AxiosRequestConfig | null
@@ -45,6 +46,9 @@ export default function useRequest<Data = unknown, Error = unknown>(
     {
       ...config,
       revalidateOnFocus: false,
+      // Collapse duplicate requests for the same key within this window (SWR's
+      // default is 2s) so multiple components mounting at once share one fetch.
+      dedupingInterval: 5000,
       fallbackData:
         fallbackData &&
         ({
@@ -61,7 +65,9 @@ export default function useRequest<Data = unknown, Error = unknown>(
   const responseData =
     response && response.data && (Object.values(response.data)[0] as Data)
 
-  const pagination = { ...response?.data }
+  // Stable reference so consumers destructuring `pagination` don't re-run
+  // effects/memos on every render just because a fresh object was spread.
+  const pagination = useMemo(() => ({ ...response?.data }), [response?.data])
 
   return {
     data:
