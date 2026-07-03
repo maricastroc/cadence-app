@@ -148,7 +148,9 @@ export default function Home() {
     setFilterTags([])
   }
 
-  if (isCheckingAuth) return null
+  // Show the loader (not a bare null) while the session probe resolves so a
+  // cold/slow backend never paints a blank screen before the redirect settles.
+  if (isCheckingAuth) return <LoadingComponent />
 
   return (
     <>

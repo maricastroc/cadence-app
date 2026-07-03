@@ -116,7 +116,10 @@ export default function Login() {
     }
   }
 
-  if (isCheckingAuth) return null
+  // While the session probe is in flight (e.g. a cold backend where /user is
+  // still pending) show the loader, never a bare null — otherwise a slow probe
+  // paints a blank white screen instead of resolving into the form.
+  if (isCheckingAuth) return <LoadingComponent />
 
   return (
     <>
