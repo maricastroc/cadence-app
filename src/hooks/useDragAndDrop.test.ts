@@ -309,7 +309,7 @@ describe('useDragAndDrop', () => {
       ])
     })
 
-    it('rolls back to the pre-drag snapshot and reports the error when the request fails', async () => {
+    it('reports the error and reconciles with the server when the request fails', async () => {
       mockPatch.mockReset().mockRejectedValueOnce(new Error('boom'))
       const { result } = setup()
 
@@ -324,12 +324,14 @@ describe('useDragAndDrop', () => {
         )
       })
 
-      // Optimistic reorder is reverted to the original order on failure.
+      // The optimistic reorder is kept (a snapshot rollback could clobber a
+      // later queued drag); instead we refetch to reconcile with server truth.
       expect(shape(result.current.columns)).toEqual([
-        { id: 1, tasks: [1, 2] },
+        { id: 1, tasks: [2, 1] },
         { id: 2, tasks: [3] },
       ])
       expect(mockHandleApiError).toHaveBeenCalled()
+      expect(mockActiveBoardMutate).toHaveBeenCalled()
       expect(result.current.isApiProcessing).toBe(false)
     })
   })
@@ -362,7 +364,7 @@ describe('useDragAndDrop', () => {
       expect(result.current.activeColumn).toBeNull()
     })
 
-    it('rolls back the column order and reports the error when the request fails', async () => {
+    it('reports the error and reconciles with the server when the request fails', async () => {
       mockPatch.mockReset().mockRejectedValueOnce(new Error('boom'))
       const { result } = setup()
       const column = result.current.columns![0]
@@ -378,11 +380,72 @@ describe('useDragAndDrop', () => {
         )
       })
 
+      // Optimistic reorder is kept; we refetch to reconcile rather than roll back.
       expect(shape(result.current.columns)).toEqual([
-        { id: 1, tasks: [1, 2] },
         { id: 2, tasks: [3] },
+        { id: 1, tasks: [1, 2] },
       ])
       expect(mockHandleApiError).toHaveBeenCalled()
+      expect(mockActiveBoardMutate).toHaveBeenCalled()
+    })
+  })
+
+  describe('persist queue', () => {
+    it('serializes persists — a second drop waits for the first request to settle', async () => {
+      // First reorder hangs until we release it; later calls resolve normally.
+      let releaseFirst: (value: unknown) => void = () => {}
+      const firstPending = new Promise((resolve) => {
+        releaseFirst = resolve
+      })
+      mockPatch
+        .mockReset()
+        .mockReturnValueOnce(firstPending)
+        .mockResolvedValue({ data: {} })
+
+      const { result } = setup()
+
+      // Drop #1: reorder task 1 within Todo (its request stays pending).
+      act(() => result.current.onDragStart(startTask(makeTask(1), 1)))
+      await act(async () => {
+        result.current.onDragEnd(
+          dragEvent(
+            overTask(1),
+            { type: 'task' },
+            overTask(2),
+          ) as unknown as DragEndEvent,
+        )
+      })
+
+      // Drop #2: move task 3 into Todo while #1 is still in flight.
+      act(() => result.current.onDragStart(startTask(makeTask(3), 2)))
+      act(() =>
+        result.current.onDragOver(
+          dragEvent(
+            overTask(3),
+            { type: 'task' },
+            overColumn(1),
+          ) as unknown as DragOverEvent,
+        ),
+      )
+      await act(async () => {
+        result.current.onDragEnd(
+          dragEvent(
+            overTask(3),
+            { type: 'task' },
+            overColumn(1),
+          ) as unknown as DragEndEvent,
+        )
+      })
+
+      // Only the first request has fired — the second is queued behind it.
+      expect(mockPatch).toHaveBeenCalledTimes(1)
+
+      // Releasing the first lets the queue drain the second.
+      await act(async () => {
+        releaseFirst({ data: {} })
+        await firstPending
+      })
+      expect(mockPatch).toHaveBeenCalledTimes(2)
     })
   })
 })
