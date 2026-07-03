@@ -7,6 +7,7 @@ import {
   DragStartEvent,
 } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
+import { useBoardsContext } from '@/contexts/BoardsContext'
 import { api } from '@/lib/axios'
 import { handleApiError } from '@/utils/handleApiError'
 import { TaskProps } from '@/@types/task'
@@ -42,11 +43,32 @@ export function useDragAndDrop(
   boardColumns: BoardColumnProps[] | undefined,
   setBoardColumns: SetColumns,
 ) {
+  const { activeBoardMutate } = useBoardsContext()
+
   const [activeTask, setActiveTask] = useState<TaskProps | null>(null)
   const [activeColumn, setActiveColumn] = useState<BoardColumnProps | null>(
     null,
   )
-  const [isApiProcessing, setIsApiProcessing] = useState(false)
+
+  // Count of persists still in flight — surfaced as `isApiProcessing` for a
+  // "saving" affordance, but it deliberately no longer gates dragging.
+  const [pendingPersists, setPendingPersists] = useState(0)
+
+  // Persists run one-at-a-time in the background. Dragging is never blocked on a
+  // request (a slow backend can't freeze the board), yet the writes stay
+  // serialized so two overlapping reorders can't race on the server, which
+  // shifts sibling positions from the *current* DB order.
+  const persistQueue = useRef<Promise<unknown>>(Promise.resolve())
+
+  const enqueuePersist = (task: () => Promise<void>) => {
+    setPendingPersists((n) => n + 1)
+    persistQueue.current = persistQueue.current
+      .then(task)
+      // Isolate failures so one rejected write can't break the chain for the
+      // next queued persist (`task` already reports/reconciles its own errors).
+      .catch(() => {})
+      .finally(() => setPendingPersists((n) => Math.max(0, n - 1)))
+  }
 
   // Mirror of the rendered columns so `onDragEnd` reads the latest state even
   // after `onDragOver` has moved a task across columns mid-drag.
@@ -215,39 +237,38 @@ export function useDragAndDrop(
       destColumnId: destColumn.id,
       newOrder: newIndex + 1,
       movedToNewColumn,
-      rollback: snapshot.columns,
     })
   }
 
-  const commit = async ({
+  const commit = ({
     taskId,
     destColumnId,
     newOrder,
     movedToNewColumn,
-    rollback,
   }: {
     taskId: string
     destColumnId: BoardColumnProps['id']
     newOrder: number
     movedToNewColumn: boolean
-    rollback: BoardColumnProps[]
   }) => {
-    setIsApiProcessing(true)
-    try {
-      if (movedToNewColumn) {
-        await api.patch(`tasks/${taskId}/move`, {
-          new_column_id: Number(destColumnId),
-          new_order: newOrder,
-        })
-      } else {
-        await api.patch(`tasks/${taskId}/reorder`, { new_order: newOrder })
+    enqueuePersist(async () => {
+      try {
+        if (movedToNewColumn) {
+          await api.patch(`tasks/${taskId}/move`, {
+            new_column_id: Number(destColumnId),
+            new_order: newOrder,
+          })
+        } else {
+          await api.patch(`tasks/${taskId}/reorder`, { new_order: newOrder })
+        }
+      } catch (error) {
+        handleApiError(error)
+        // The optimistic board already moved the card; can't safely roll back to
+        // a pre-drag snapshot (later drags may have built on it), so pull server
+        // truth — the board-sync effect applies it once no drag is active.
+        activeBoardMutate()
       }
-    } catch (error) {
-      setBoardColumns(rollback)
-      handleApiError(error)
-    } finally {
-      setIsApiProcessing(false)
-    }
+    })
   }
 
   // Single-list horizontal reorder: the final index is the only thing that
@@ -279,28 +300,24 @@ export function useDragAndDrop(
     commitColumn({
       columnId: draggedColumn.id,
       newOrder: newIndex + 1,
-      rollback: snapshot,
     })
   }
 
-  const commitColumn = async ({
+  const commitColumn = ({
     columnId,
     newOrder,
-    rollback,
   }: {
     columnId: BoardColumnProps['id']
     newOrder: number
-    rollback: BoardColumnProps[]
   }) => {
-    setIsApiProcessing(true)
-    try {
-      await api.patch(`columns/${columnId}/reorder`, { new_order: newOrder })
-    } catch (error) {
-      setBoardColumns(rollback)
-      handleApiError(error)
-    } finally {
-      setIsApiProcessing(false)
-    }
+    enqueuePersist(async () => {
+      try {
+        await api.patch(`columns/${columnId}/reorder`, { new_order: newOrder })
+      } catch (error) {
+        handleApiError(error)
+        activeBoardMutate()
+      }
+    })
   }
 
   // A drag can end without a drop — Escape, a lost pointer, or the underlying
@@ -318,7 +335,9 @@ export function useDragAndDrop(
   return {
     activeTask,
     activeColumn,
-    isApiProcessing,
+    // A persist is in flight — for an optional "saving" hint only; this must not
+    // be used to disable dragging (that reintroduces the freeze on a slow API).
+    isApiProcessing: pendingPersists > 0,
     onDragStart,
     onDragOver,
     onDragEnd,

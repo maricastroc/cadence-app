@@ -214,9 +214,10 @@ export default function Home() {
                         columns={displayColumns}
                         isLoading={isLoading}
                         isApiProcessing={isApiProcessing}
-                        dragDisabled={
-                          isLoading || isApiProcessing || isFiltering
-                        }
+                        // Persisting a move no longer disables dragging — the
+                        // write runs in a background queue — so a slow backend
+                        // can't freeze the board between drags.
+                        dragDisabled={isLoading || isFiltering}
                         onOpenModal={(value) => setIsColumnFormModalOpen(value)}
                       />
                     )
