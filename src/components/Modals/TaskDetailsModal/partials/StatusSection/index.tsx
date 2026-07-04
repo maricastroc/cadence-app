@@ -30,7 +30,10 @@ export const StatusSection = ({
   useEffect(() => {
     if (!isOpen) return
     const id = requestAnimationFrame(() =>
-      statusRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }),
+      statusRef.current?.scrollIntoView({
+        block: 'nearest',
+        behavior: 'smooth',
+      }),
     )
     return () => cancelAnimationFrame(id)
   }, [isOpen, statusRef])
