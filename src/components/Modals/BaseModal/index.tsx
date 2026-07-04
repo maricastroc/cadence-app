@@ -12,7 +12,18 @@ import { ReactNode, useEffect } from 'react'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { LoadingComponent } from '@/components/Shared/LoadingComponent'
 
-function useBodyModalLock() {
+/**
+ * Applies the body-level `modal-open` lock (which freezes the board's
+ * horizontal pan) for as long as it stays mounted, ref-counting so nested or
+ * stacked modals release the lock only once the last one closes.
+ *
+ * This is a component — not a hook called in BaseModal's body — so it can live
+ * *inside* `Dialog.Content`. Radix only mounts the content while the dialog is
+ * actually open, whereas BaseModal itself is often rendered unconditionally
+ * inside a closed `<Dialog.Root>`. Locking on the content's presence is what
+ * keeps closed-but-mounted modals from freezing the board forever.
+ */
+function BodyModalLock() {
   useEffect(() => {
     const body = document.body
     const next = (Number(body.dataset.openModals) || 0) + 1
@@ -28,6 +39,8 @@ function useBodyModalLock() {
       }
     }
   }, [])
+
+  return null
 }
 
 interface Props {
@@ -57,8 +70,6 @@ export const BaseModal = ({
   className,
   onClose,
 }: Props) => {
-  useBodyModalLock()
-
   return (
     <Dialog.Portal>
       <ModalOverlay />
@@ -69,6 +80,7 @@ export const BaseModal = ({
         height={height}
         overflow={overflow}
       >
+        <BodyModalLock />
         {hasHeader && (
           <HeaderContent padding={titlePadding}>
             <ModalTitle className="DialogTitle">{title}</ModalTitle>
