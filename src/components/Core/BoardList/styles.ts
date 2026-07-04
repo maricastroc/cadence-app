@@ -15,6 +15,11 @@ export const BoardsContainer = styled.div`
   }
 
   scrollbar-width: none;
+
+  @media (max-width: 767px) {
+    gap: 0.25rem;
+    padding: 0 0.5rem;
+  }
 `
 
 export const EmptyBoardsHint = styled.p`
@@ -36,6 +41,16 @@ export const BoardIcon = styled.span`
   font-weight: 700;
   letter-spacing: -0.02em;
   box-shadow: ${(props) => props.theme['highlight-top']};
+
+  /* The board switcher only renders on phones (the sidebar is hidden there),
+     so these bumps give it a roomier, more considered feel than the compact
+     desktop sidebar rows. */
+  @media (max-width: 767px) {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    font-size: 0.95rem;
+  }
 `
 
 export const BoardButton = styled.button`
@@ -111,6 +126,31 @@ export const BoardButton = styled.button`
   &:focus-visible {
     outline-offset: -2px;
   }
+
+  @media (max-width: 767px) {
+    min-height: 56px;
+    padding: 0.65rem 0.75rem;
+    gap: 0.85rem;
+    border-radius: 13px;
+
+    p {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .count {
+      font-size: 0.875rem;
+    }
+
+    &.active::before {
+      height: 26px;
+      width: 3px;
+    }
+
+    &:active {
+      transform: scale(0.99);
+    }
+  }
 `
 export const CreateBoardButton = styled.button`
   cursor: pointer;
@@ -153,6 +193,32 @@ export const CreateBoardButton = styled.button`
 
     p {
       color: ${(props) => props.theme['text-color']};
+    }
+  }
+
+  @media (max-width: 767px) {
+    min-height: 56px;
+    padding: 0.65rem 0.75rem;
+    gap: 0.85rem;
+    border-radius: 13px;
+
+    .plus-box {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+    }
+
+    svg {
+      font-size: 0.95rem;
+    }
+
+    p {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    &:active {
+      transform: scale(0.99);
     }
   }
 `

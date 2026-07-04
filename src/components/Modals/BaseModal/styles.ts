@@ -73,6 +73,11 @@ export const ModalTitle = styled(RadixTitle)`
   &.delete {
     color: ${(props) => props.theme['error-color']};
   }
+
+  @media (max-width: 767px) {
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+  }
 `
 
 export const ModalLoading = styled.div`
