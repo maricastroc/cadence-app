@@ -63,6 +63,18 @@ export const ColumnHeader = styled.div`
     font-variant-numeric: tabular-nums;
     color: ${(props) => props.theme['muted-color']};
   }
+
+  @media (max-width: 767px) {
+    padding: 0.5rem 0.35rem 0.6rem 0.25rem;
+
+    .name {
+      font-size: 0.9375rem;
+    }
+
+    .count {
+      font-size: 0.8125rem;
+    }
+  }
 `
 
 export const DragHandle = styled.button`
@@ -103,6 +115,15 @@ export const DragHandle = styled.button`
     cursor: default;
     opacity: 0.4;
   }
+
+  @media (max-width: 767px) {
+    width: 40px;
+    height: 40px;
+
+    svg {
+      font-size: 0.9rem;
+    }
+  }
 `
 
 export const MenuContainer = styled.div`
@@ -141,6 +162,15 @@ export const MenuButton = styled.button`
     outline-offset: 2px;
     color: ${(props) => props.theme['title-color']};
   }
+
+  @media (max-width: 767px) {
+    width: 44px;
+    height: 44px;
+
+    svg {
+      font-size: 1rem;
+    }
+  }
 `
 
 export const MenuDropdown = styled.div`
@@ -150,6 +180,16 @@ export const MenuDropdown = styled.div`
   right: 0;
   width: 11rem;
   z-index: 9999;
+
+  @media (max-width: 767px) {
+    top: 2.75rem;
+    width: 13rem;
+
+    button {
+      padding: 0.75rem 0.85rem;
+      font-size: 0.9375rem;
+    }
+  }
 `
 
 export const TasksContainer = styled.div`
@@ -178,6 +218,13 @@ export const TasksContainer = styled.div`
 
   scrollbar-width: thin;
   scrollbar-color: ${(props) => props.theme['scroll-color']} transparent;
+
+  @media (max-width: 767px) {
+    gap: 0.6rem;
+    padding: 0.25rem 0.25rem 0;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
 `
 
 export const EmptyTasksContainer = styled.div`
@@ -223,5 +270,26 @@ export const AddTaskButton = styled.button`
   &:hover {
     color: ${(props) => props.theme['title-color']};
     background-color: ${(props) => props.theme['card-color']};
+  }
+
+  @media (max-width: 767px) {
+    flex-shrink: 0;
+    min-height: 48px;
+    margin: 0.25rem 0.5rem 0.5rem;
+    width: calc(100% - 1rem);
+    border-radius: 12px;
+    background-color: ${(props) => props.theme['field-bg']};
+    color: ${(props) => props.theme['text-color']};
+    font-size: 0.9375rem;
+    font-weight: 600;
+
+    svg {
+      font-size: 0.875rem;
+    }
+
+    &:active {
+      transform: scale(0.99);
+      color: ${(props) => props.theme['accent-text']};
+    }
   }
 `

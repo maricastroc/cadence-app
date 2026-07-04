@@ -37,12 +37,24 @@ export const TagsLabel = styled.div`
   svg {
     font-size: 0.72rem;
   }
+
+  @media (max-width: 767px) {
+    font-size: 0.8125rem;
+
+    svg {
+      font-size: 0.8rem;
+    }
+  }
 `
 
 export const TagsHint = styled.p`
   font-size: 0.75rem;
   line-height: 1.4;
   color: ${(props) => props.theme['muted-color']};
+
+  @media (max-width: 767px) {
+    font-size: 0.8125rem;
+  }
 `
 
 export const ChipsWrap = styled.div`
@@ -79,6 +91,12 @@ export const Chip = styled.button<{ $color: string; $checked: boolean }>`
 
   &:active {
     transform: scale(0.96);
+  }
+
+  @media (max-width: 767px) {
+    min-height: 44px;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.9375rem;
   }
 `
 

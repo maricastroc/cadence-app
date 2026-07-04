@@ -25,6 +25,10 @@ export const Title = styled.p`
   line-height: 1.4;
   color: ${(props) => props.theme['text-color']};
 
+  @media (max-width: 767px) {
+    font-size: 0.9375rem;
+  }
+
   &.checked {
     color: ${(props) => props.theme['muted-color']};
     text-decoration: line-through;

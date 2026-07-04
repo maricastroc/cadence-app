@@ -6,4 +6,9 @@ export const TaskDescription = styled.p`
   line-height: 1.4rem;
   font-weight: 500;
   margin-bottom: 1.4rem;
+
+  @media (max-width: 767px) {
+    font-size: 0.9375rem;
+    line-height: 1.5rem;
+  }
 `

@@ -30,6 +30,10 @@ export const GlobalStyle = createGlobalStyle`
     outline-offset: 2px;
   }
 
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
     background-color: ${(props) => props.theme['bg-color']};
     color: ${(props) => props.theme['title-color']};
@@ -37,6 +41,26 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+  }
+
+  /* Touch devices: remove the grey tap flash and let each control own its
+     pressed state instead. */
+  @media (hover: none) {
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+  }
+
+  /* On phones, form fields must be at least 16px or iOS Safari zooms the
+     viewport on focus — the single biggest "this feels like a website, not an
+     app" tell. !important because each field's own styled class (0,1,0) would
+     otherwise out-specify this element-level rule (0,0,1) and keep it at 13px. */
+  @media (max-width: 767px) {
+    input,
+    textarea,
+    select {
+      font-size: 16px !important;
+    }
   }
 
   body, input, textarea, button {

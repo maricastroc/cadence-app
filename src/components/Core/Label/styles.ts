@@ -15,4 +15,12 @@ export const Label = styled.label<{ $hasError?: boolean }>`
     font-size: 0.72rem;
     color: inherit;
   }
+
+  @media (max-width: 767px) {
+    font-size: 0.8125rem;
+
+    svg {
+      font-size: 0.8rem;
+    }
+  }
 `

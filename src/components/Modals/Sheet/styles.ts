@@ -15,6 +15,11 @@ export const SheetHeader = styled.div`
   width: 100%;
   flex-shrink: 0;
   padding: 2rem 1.5rem 1.2rem;
+
+  @media (max-width: 767px) {
+    padding: 1.35rem 1.15rem 1rem;
+    align-items: center;
+  }
 `
 
 export const HeaderIcon = styled.div`
@@ -49,6 +54,10 @@ export const SheetSubtitle = styled.p`
   font-size: 0.78rem;
   color: ${(props) => props.theme['muted-color']};
   line-height: 1.35;
+
+  @media (max-width: 767px) {
+    font-size: 0.8125rem;
+  }
 `
 
 export const CloseBtn = styled.button`
@@ -73,6 +82,15 @@ export const CloseBtn = styled.button`
     background-color: ${(props) => props.theme['hairline-color']};
     color: ${(props) => props.theme['title-color']};
   }
+
+  @media (max-width: 767px) {
+    width: 44px;
+    height: 44px;
+
+    svg {
+      font-size: 1.2rem;
+    }
+  }
 `
 
 export const Body = styled.div`
@@ -81,6 +99,11 @@ export const Body = styled.div`
   width: 100%;
   overflow-y: auto;
   padding: 0.3rem 1.5rem 1.4rem;
+  -webkit-overflow-scrolling: touch;
+
+  @media (max-width: 767px) {
+    padding: 0.3rem 1.15rem 1.4rem;
+  }
 `
 
 export const Section = styled.div`
@@ -104,6 +127,14 @@ export const SectionLabel = styled.div`
   svg {
     font-size: 0.72rem;
   }
+
+  @media (max-width: 767px) {
+    font-size: 0.78rem;
+
+    svg {
+      font-size: 0.8rem;
+    }
+  }
 `
 
 export const SectionHint = styled.p`
@@ -111,6 +142,10 @@ export const SectionHint = styled.p`
   line-height: 1.4;
   color: ${(props) => props.theme['muted-color']};
   margin-top: -0.7rem;
+
+  @media (max-width: 767px) {
+    font-size: 0.8125rem;
+  }
 `
 
 export const Divider = styled.div`
@@ -131,6 +166,12 @@ export const FieldGroup = styled.div`
     color: ${(props) => props.theme['error-color']};
     font-size: 0.72rem;
     font-weight: 500;
+  }
+
+  @media (max-width: 767px) {
+    span {
+      font-size: 0.8125rem;
+    }
   }
 `
 
@@ -170,6 +211,10 @@ export const Footer = styled.div`
   flex-shrink: 0;
   padding: 0.9rem 1.5rem;
   background-color: ${(props) => props.theme['card-color']};
+
+  @media (max-width: 767px) {
+    padding: 0.85rem 1.15rem;
+  }
 `
 
 export const FooterHint = styled.div`
@@ -201,6 +246,11 @@ export const Kbd = styled.span`
     background-color: rgba(0, 0, 0, 0.18);
     border-color: transparent;
     color: inherit;
+  }
+
+  /* Keyboard shortcut hints are meaningless on touch. */
+  @media (max-width: 767px) {
+    display: none;
   }
 `
 

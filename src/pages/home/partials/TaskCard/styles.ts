@@ -21,11 +21,14 @@ export const TaskCardContainer = styled.div`
     transform var(--dur) var(--ease);
   will-change: transform;
 
-  &:hover {
-    background-color: ${(props) => props.theme['card-lift']};
-    border-color: ${(props) => props.theme['accent-soft']};
-    box-shadow: ${(props) => props.theme['shadow-card-hover']};
-    transform: translateY(-1px);
+  /* Hover-lift is desktop-only — on touch it "sticks" after a tap. */
+  @media (hover: hover) {
+    &:hover {
+      background-color: ${(props) => props.theme['card-lift']};
+      border-color: ${(props) => props.theme['accent-soft']};
+      box-shadow: ${(props) => props.theme['shadow-card-hover']};
+      transform: translateY(-1px);
+    }
   }
 
   &:active {
@@ -52,6 +55,18 @@ export const TaskCardContainer = styled.div`
   &.drag-disabled:active {
     cursor: default;
   }
+
+  @media (max-width: 767px) {
+    gap: 0.8rem;
+    padding: 0.9rem 0.95rem;
+    border-radius: 14px;
+    box-shadow: ${(props) => props.theme['shadow-sm']};
+
+    &:active {
+      background-color: ${(props) => props.theme['card-lift']};
+      transform: scale(0.985);
+    }
+  }
 `
 
 export const CardBody = styled.div`
@@ -76,6 +91,12 @@ export const TaskTitle = styled.strong`
     text-decoration: line-through;
     text-decoration-color: ${(props) => props.theme['muted-color']};
   }
+
+  @media (max-width: 767px) {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
 `
 
 export const CompleteToggle = styled.button`
@@ -99,8 +120,10 @@ export const CompleteToggle = styled.button`
     font-size: 0.55rem;
   }
 
-  &:hover {
-    border-color: ${(props) => props.theme['completed-color']};
+  @media (hover: hover) {
+    &:hover {
+      border-color: ${(props) => props.theme['completed-color']};
+    }
   }
 
   &.completed {
@@ -110,6 +133,33 @@ export const CompleteToggle = styled.button`
 
   &:disabled {
     cursor: default;
+  }
+
+  /* Keep the ring visually small but give it a full 44px tap target so it's
+     comfortable to check off with a thumb. */
+  @media (max-width: 767px) {
+    width: 22px;
+    height: 22px;
+    margin-top: 2px;
+    position: relative;
+
+    svg {
+      font-size: 0.7rem;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px;
+      height: 44px;
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.9);
+    }
   }
 `
 
@@ -140,6 +190,18 @@ export const Tag = styled.span`
     height: 5px;
     border-radius: 50%;
     flex-shrink: 0;
+  }
+
+  &.more {
+    color: ${(props) => props.theme['muted-color']};
+    font-weight: 600;
+  }
+
+  @media (max-width: 767px) {
+    height: 22px;
+    padding: 0 0.5rem;
+    border-radius: 7px;
+    font-size: 0.75rem;
   }
 `
 
@@ -183,6 +245,16 @@ export const InfoItem = styled.div`
     color: ${(props) => props.theme['muted-color']};
     font-size: 0.72rem;
   }
+
+  @media (max-width: 767px) {
+    p {
+      font-size: 0.8125rem;
+    }
+
+    svg {
+      font-size: 0.8rem;
+    }
+  }
 `
 
 export const DueDateBadge = styled.div`
@@ -211,5 +283,13 @@ export const DueDateBadge = styled.div`
 
   &.completed {
     color: ${(props) => props.theme['completed-color']};
+  }
+
+  @media (max-width: 767px) {
+    font-size: 0.8125rem;
+
+    svg {
+      font-size: 0.8rem;
+    }
   }
 `

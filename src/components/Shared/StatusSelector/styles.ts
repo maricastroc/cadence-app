@@ -32,4 +32,9 @@ export const StatusSelectorBtn = styled.button`
   span {
     margin-left: 0;
   }
+
+  @media (max-width: 767px) {
+    min-height: 44px;
+    font-size: 0.9375rem;
+  }
 `

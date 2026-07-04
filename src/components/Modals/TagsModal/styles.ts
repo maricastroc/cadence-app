@@ -15,6 +15,16 @@ export const SheetHeader = styled.div`
   width: 100%;
   flex-shrink: 0;
   padding: 1.7rem 1.5rem 1.1rem;
+
+  /* On phones, drop the "New label" action to its own row below the title so
+     the header isn't cramped; the close button stays pinned top-right. */
+  @media (max-width: 767px) {
+    position: relative;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1.3rem 1.15rem 1.05rem;
+  }
 `
 
 export const HeaderIcon = styled.div`
@@ -36,6 +46,11 @@ export const HeaderTitles = styled.div`
   gap: 0.2rem;
   flex: 1;
   min-width: 0;
+
+  /* Reserve room for the absolutely-positioned close button on the title row. */
+  @media (max-width: 767px) {
+    margin-right: 2.75rem;
+  }
 `
 
 export const SheetTitle = styled.h2`
@@ -49,6 +64,12 @@ export const SheetSubtitle = styled.p`
   font-size: 0.78rem;
   color: ${(props) => props.theme['muted-color']};
   line-height: 1.35;
+
+  /* The header is tight next to the "New label" + close buttons on phones, and
+     the list itself already shows the labels — drop the count subtitle here. */
+  @media (max-width: 767px) {
+    display: none;
+  }
 `
 
 export const CloseBtn = styled.button`
@@ -72,6 +93,18 @@ export const CloseBtn = styled.button`
   &:hover {
     background-color: ${(props) => props.theme['hairline-color']};
     color: ${(props) => props.theme['title-color']};
+  }
+
+  @media (max-width: 767px) {
+    position: absolute;
+    top: 0.95rem;
+    right: 0.9rem;
+    width: 44px;
+    height: 44px;
+
+    svg {
+      font-size: 1.2rem;
+    }
   }
 `
 
@@ -139,6 +172,10 @@ export const TagName = styled.p`
 export const TagMeta = styled.span`
   font-size: 0.72rem;
   color: ${(props) => props.theme['muted-color']};
+
+  @media (max-width: 767px) {
+    font-size: 0.8125rem;
+  }
 `
 
 export const RowActions = styled.div`
@@ -150,6 +187,13 @@ export const RowActions = styled.div`
   transition: opacity 140ms ease;
 
   @media (hover: none) {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* On phones there is no hover to reveal them, so the edit/delete actions must
+     always be visible — otherwise the row's actions are undiscoverable. */
+  @media (max-width: 767px) {
     opacity: 1;
     pointer-events: auto;
   }
@@ -180,6 +224,15 @@ export const IconBtn = styled.button`
   &.danger:hover {
     color: ${(props) => props.theme['error-color']};
   }
+
+  @media (max-width: 767px) {
+    width: 44px;
+    height: 44px;
+
+    svg {
+      font-size: 1rem;
+    }
+  }
 `
 
 export const EmptyState = styled.div`
@@ -193,6 +246,12 @@ export const EmptyState = styled.div`
   p {
     font-size: 0.82rem;
     color: ${(props) => props.theme['muted-color']};
+  }
+
+  @media (max-width: 767px) {
+    p {
+      font-size: 0.9375rem;
+    }
   }
 `
 
@@ -213,6 +272,10 @@ export const ComposerInput = styled.input`
   width: 100%;
   height: 40px;
   padding: 0 0.8rem;
+
+  @media (max-width: 767px) {
+    height: 44px;
+  }
   border-radius: 8px;
   background-color: ${(props) => props.theme['card-color']};
   border: none;
@@ -247,6 +310,12 @@ export const SwatchOption = styled.button<{
   border-radius: 7px;
   cursor: pointer;
   background-color: ${(props) => props.$color};
+
+  @media (max-width: 767px) {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+  }
   border: none;
   box-shadow: ${(props) =>
     props.$selected
@@ -275,6 +344,10 @@ export const ComposerActions = styled.div`
 export const ComposerHint = styled.span`
   font-size: 0.72rem;
   color: ${(props) => props.theme['muted-color']};
+
+  @media (max-width: 767px) {
+    font-size: 0.8125rem;
+  }
 `
 
 export const ComposerButtons = styled.div`
@@ -289,6 +362,17 @@ export const HeaderActions = styled.div`
   align-items: center;
   gap: 0.5rem;
   flex-shrink: 0;
+
+  /* Full-width second row on phones (the close button is pinned separately). */
+  @media (max-width: 767px) {
+    order: 3;
+    flex-basis: 100%;
+    width: 100%;
+
+    & > button:not([aria-label='Close']) {
+      flex: 1;
+    }
+  }
 `
 
 export const SearchBar = styled.div`
@@ -297,6 +381,10 @@ export const SearchBar = styled.div`
   gap: 0.55rem;
   height: 40px;
   margin-bottom: 0.7rem;
+
+  @media (max-width: 767px) {
+    height: 44px;
+  }
   padding: 0 0.8rem;
   border-radius: 9px;
   background-color: ${(props) => props.theme['field-bg']};

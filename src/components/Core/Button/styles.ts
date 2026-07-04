@@ -106,4 +106,21 @@ export const Container = styled.button`
     cursor: not-allowed;
     opacity: 0.5;
   }
+
+  @media (max-width: 767px) {
+    font-size: 0.9375rem;
+
+    &.sm {
+      height: 44px;
+      padding: 0 1.05rem;
+      font-size: 0.9375rem;
+    }
+    &.md {
+      height: 46px;
+    }
+    &.lg {
+      height: 50px;
+      font-size: 0.9375rem;
+    }
+  }
 `

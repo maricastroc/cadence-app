@@ -54,6 +54,15 @@ export const CloseButton = styled(RadixClose)`
   &:hover {
     color: ${(props) => props.theme['title-color']};
   }
+
+  @media (max-width: 767px) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-right: -0.4rem;
+  }
 `
 
 export const ModalTitle = styled(RadixTitle)`
@@ -123,6 +132,16 @@ export const ModalContent = styled(RadixContent)<{
     overflow: visible;
     max-height: none;
     width: clamp(300px, 92vw, 25rem);
+  }
+
+  /* Phones: stay centered, but use nearly the full width and cap the height so
+     long content scrolls inside the dialog instead of overflowing the screen. */
+  @media (max-width: 767px) {
+    width: clamp(300px, 92vw, 33rem);
+    max-height: 88vh;
+    max-height: 88dvh;
+    overflow-y: ${(props) => props.overflow || 'auto'};
+    -webkit-overflow-scrolling: touch;
   }
 
   @media (min-width: 480px) {

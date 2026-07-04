@@ -29,6 +29,12 @@ export const SelectStatusField = styled.button`
     color: ${(props) => props.theme['title-color']};
   }
 
+  @media (max-width: 767px) {
+    p {
+      font-size: 0.9375rem;
+    }
+  }
+
   svg {
     color: ${(props) => props.theme['muted-color']};
     font-size: 0.95rem;

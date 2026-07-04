@@ -19,6 +19,8 @@ import {
 import { TaskDetailsModal } from '@/components/Modals/TaskDetailsModal'
 import { getTagHex } from '@/utils/getTagHex'
 import { TaskProps } from '@/@types/task'
+import { useWindowResize } from '@/utils/useWindowResize'
+import { BREAKPOINT_SM } from '@/utils/constants'
 import { useBoardsContext } from '@/contexts/BoardsContext'
 import { BoardColumnProps } from '@/@types/board-column'
 import { formatDate } from '@/utils/formatDate'
@@ -56,6 +58,12 @@ export const CardContent = memo(function CardContent({
   const { activeBoardMutate } = useBoardsContext()
   const [isCompleted, setIsCompleted] = useState(!!task.is_completed)
   const [isToggling, setIsToggling] = useState(false)
+
+  // On phones, keep cards uncluttered: show at most two tags + an overflow chip.
+  const isMobile = useWindowResize(BREAKPOINT_SM)
+  const tags = task?.tags ?? []
+  const visibleTags = isMobile ? tags.slice(0, 2) : tags
+  const hiddenTagCount = tags.length - visibleTags.length
 
   const dueStatus = task?.due_date
     ? getDueStatus(task.due_date, isCompleted)
@@ -105,9 +113,9 @@ export const CardContent = memo(function CardContent({
           {task.name}
         </TaskTitle>
 
-        {task?.tags && task?.tags?.length > 0 && (
+        {tags.length > 0 && (
           <TagsContainer>
-            {task.tags.map((item) => (
+            {visibleTags.map((item) => (
               <Tag key={item.id}>
                 <span
                   className="dot"
@@ -116,6 +124,9 @@ export const CardContent = memo(function CardContent({
                 {item.name}
               </Tag>
             ))}
+            {hiddenTagCount > 0 && (
+              <Tag className="more">+{hiddenTagCount}</Tag>
+            )}
           </TagsContainer>
         )}
 

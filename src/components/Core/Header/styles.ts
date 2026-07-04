@@ -12,6 +12,11 @@ export const Container = styled.div`
   top: 0;
   z-index: 10;
 
+  @media (max-width: 767px) {
+    gap: 0.75rem;
+    padding: calc(0.5rem + env(safe-area-inset-top)) 0.9rem 0.7rem;
+  }
+
   @media (min-width: 768px) {
     padding: 1.125rem 1.5rem;
     margin-left: 220px;
@@ -56,6 +61,11 @@ export const BoardName = styled.h1`
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 60vw;
+
+  @media (max-width: 767px) {
+    font-size: 1.1875rem;
+    max-width: 56vw;
+  }
 `
 
 export const BoardNameRow = styled.div`
@@ -82,6 +92,17 @@ export const MetricStrip = styled.div`
   align-items: center;
   gap: 0.375rem;
   flex-wrap: wrap;
+
+  /* On phones the title row is narrow (actions sit beside it), so keep only the
+     progress signal — per-column counts already live on the board. */
+  @media (max-width: 767px) {
+    flex-wrap: nowrap;
+
+    & > div:nth-of-type(1),
+    & > div:nth-of-type(2) {
+      display: none;
+    }
+  }
 `
 
 export const StatChip = styled.div`
@@ -189,6 +210,12 @@ export const ActionBtn = styled.button`
     display: none;
   }
 
+  @media (max-width: 767px) {
+    height: 44px;
+    min-width: 44px;
+    padding: 0 0.85rem;
+  }
+
   @media (min-width: 560px) {
     p {
       display: block;
@@ -220,6 +247,11 @@ export const EditDeleteBtn = styled.button`
     background-color: ${(props) => props.theme['card-hover']};
     box-shadow: ${(props) => props.theme['shadow-card-hover']};
     color: ${(props) => props.theme['title-color']};
+  }
+
+  @media (max-width: 767px) {
+    width: 44px;
+    height: 44px;
   }
 `
 
@@ -303,6 +335,15 @@ export const SearchBox = styled.div`
       opacity: 0;
     }
   }
+
+  @media (max-width: 767px) {
+    height: 44px;
+    min-width: 0;
+
+    .kbd {
+      display: none;
+    }
+  }
 `
 
 export const ToolButtonWrapper = styled.div`
@@ -360,6 +401,11 @@ export const ToolButton = styled.button`
       color: ${(props) => props.theme['accent-color']};
     }
   }
+
+  @media (max-width: 767px) {
+    height: 44px;
+    padding: 0 0.8rem;
+  }
 `
 
 export const Dropdown = styled.div`
@@ -403,6 +449,22 @@ export const Dropdown = styled.div`
     padding: 0.5rem;
     font-size: 0.8125rem;
     color: ${(props) => props.theme['muted-color']};
+  }
+
+  @media (max-width: 767px) {
+    min-width: 240px;
+
+    .dropdown-header {
+      font-size: 0.75rem;
+
+      button {
+        font-size: 0.75rem;
+      }
+    }
+
+    .empty {
+      font-size: 0.9375rem;
+    }
   }
 `
 
@@ -448,5 +510,11 @@ export const DropdownItem = styled.button`
 
   &.selected {
     color: ${(props) => props.theme['accent-text']};
+  }
+
+  @media (max-width: 767px) {
+    min-height: 44px;
+    padding: 0.6rem 0.65rem;
+    font-size: 0.9375rem;
   }
 `

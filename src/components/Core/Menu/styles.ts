@@ -72,6 +72,16 @@ export const MenuItem = styled.button`
     background-color: transparent;
     color: ${(props) => props.theme['text-color']};
   }
+
+  @media (max-width: 767px) {
+    min-height: 44px;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.9375rem;
+
+    svg {
+      font-size: 0.9rem;
+    }
+  }
 `
 
 export const MenuDivider = styled.div`

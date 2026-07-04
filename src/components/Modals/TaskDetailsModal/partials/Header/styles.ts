@@ -37,6 +37,14 @@ export const TaskSubtitle = styled.span`
   svg {
     font-size: 0.7rem;
   }
+
+  @media (max-width: 767px) {
+    font-size: 0.8125rem;
+
+    svg {
+      font-size: 0.78rem;
+    }
+  }
 `
 
 export const OptionsContainer = styled.div`
@@ -68,6 +76,15 @@ export const OptionsBtn = styled.button`
   &[data-active='true'] {
     background-color: ${(props) => props.theme['hairline-color']};
     color: ${(props) => props.theme['title-color']};
+  }
+
+  @media (max-width: 767px) {
+    width: 44px;
+    height: 44px;
+
+    svg {
+      font-size: 1.2rem;
+    }
   }
 `
 
