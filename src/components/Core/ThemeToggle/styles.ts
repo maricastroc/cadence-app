@@ -17,11 +17,14 @@ export const ThemeSwitcherContainer = styled.div`
   }
 
   /* Only shown inside the mobile board switcher (the sidebar is hidden on
-     phones) — size it up so it's comfortable to tap and reads as intentional. */
+     phones) — size it up, and use field-bg since card-color matches the modal
+     surface in dark mode and the pill would otherwise disappear. */
   @media (max-width: 767px) {
     padding: 0.6rem 0.9rem;
     gap: 1rem;
     border-radius: 12px;
+    background-color: ${(props) => props.theme['field-bg']};
+    box-shadow: none;
 
     svg {
       font-size: 1.15rem;
