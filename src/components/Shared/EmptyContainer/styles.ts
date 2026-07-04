@@ -40,9 +40,9 @@ export const ContentWrapper = styled.div`
   h2 {
     margin-top: 1.75rem;
     font-size: ${(props) => props.theme['heading-xxl']};
-    font-weight: 700;
+    font-weight: 600;
     color: ${(props) => props.theme['title-color']};
-    letter-spacing: -0.02em;
+    letter-spacing: -0.024em;
   }
 
   p {
@@ -103,6 +103,6 @@ export const FeatureList = styled.ul`
     padding: 3px;
     border-radius: 50%;
     color: ${(props) => props.theme['accent-text']};
-    background-color: ${(props) => props.theme['accent-soft']};
+    background-color: ${(props) => props.theme['accent-fill']};
   }
 `

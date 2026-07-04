@@ -5,34 +5,33 @@ export const Container = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.625rem;
   width: 100%;
   min-height: 44px;
-  padding: 0.5rem 0.7rem;
+  padding: 0.5rem 0.75rem;
   background-color: ${(props) => props.theme['field-bg']};
-  border: 1px solid ${(props) => props.theme['border-color']};
-  border-radius: 9px;
-  transition: border-color 160ms ease, background-color 160ms ease;
+  border: none;
+  border-radius: 10px;
+  transition: background-color var(--dur) var(--ease);
 
   &:hover {
-    border-color: ${(props) => props.theme['hairline-strong']};
+    background-color: ${(props) => props.theme['card-hover']};
   }
 `
 
 export const Title = styled.p`
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: ${(props) => props.theme['title-color']};
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: ${(props) => props.theme['text-color']};
 
   &.checked {
-    color: ${(props) => props.theme['title-color']};
-    opacity: 0.7;
+    color: ${(props) => props.theme['muted-color']};
     text-decoration: line-through;
   }
 
   &.unchecked {
-    color: ${(props) => props.theme['title-color']};
-    opacity: 1;
+    color: ${(props) => props.theme['text-color']};
     text-decoration: none;
   }
 `

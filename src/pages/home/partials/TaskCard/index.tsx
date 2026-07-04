@@ -4,23 +4,22 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import {
+  CardBody,
   CompleteToggle,
   DueDateBadge,
   InfoContent,
   InfoItem,
   ProgressContainer,
   ProgressFill,
-  ProgressWrapper,
   Tag,
   TagsContainer,
   TaskCardContainer,
-  TaskTitleRow,
+  TaskTitle,
 } from './styles'
 import { TaskDetailsModal } from '@/components/Modals/TaskDetailsModal'
-import { getTagStyle } from '@/utils/getTagHex'
+import { getTagHex } from '@/utils/getTagHex'
 import { TaskProps } from '@/@types/task'
 import { useBoardsContext } from '@/contexts/BoardsContext'
-import { useTheme } from '@/contexts/ThemeContext'
 import { BoardColumnProps } from '@/@types/board-column'
 import { formatDate } from '@/utils/formatDate'
 import { getDueStatus, getDueLabel } from '@/utils/getDueStatus'
@@ -55,7 +54,6 @@ export const CardContent = memo(function CardContent({
     totalSubtasks > 0 ? (completedSubtasks / totalSubtasks) * 100 : 0
 
   const { activeBoardMutate } = useBoardsContext()
-  const { enableDarkMode } = useTheme()
   const [isCompleted, setIsCompleted] = useState(!!task.is_completed)
   const [isToggling, setIsToggling] = useState(false)
 
@@ -86,61 +84,70 @@ export const CardContent = memo(function CardContent({
     }
   }
 
+  const hasMeta = totalSubtasks > 0 || !!task?.due_date
+
   return (
     <>
-      {task?.tags && task?.tags?.length > 0 && (
-        <TagsContainer>
-          {task.tags.map((item) => (
-            <Tag key={item.id} style={getTagStyle(item.color, enableDarkMode)}>
-              {item.name}
-            </Tag>
-          ))}
-        </TagsContainer>
-      )}
+      <CompleteToggle
+        type="button"
+        className={isCompleted ? 'completed' : ''}
+        onClick={handleToggleCompletion}
+        onPointerDown={(event) => event.stopPropagation()}
+        disabled={isToggling}
+        aria-pressed={isCompleted}
+        aria-label={isCompleted ? 'Mark task as not done' : 'Mark task as done'}
+      >
+        {isCompleted ? (
+          <FontAwesomeIcon icon={faCheck} aria-hidden="true" />
+        ) : null}
+      </CompleteToggle>
 
-      <TaskTitleRow className={isCompleted ? 'completed' : ''}>
-        <CompleteToggle
-          type="button"
-          className={isCompleted ? 'completed' : ''}
-          onClick={handleToggleCompletion}
-          onPointerDown={(event) => event.stopPropagation()}
-          disabled={isToggling}
-          aria-pressed={isCompleted}
-          aria-label={
-            isCompleted ? 'Mark task as not done' : 'Mark task as done'
-          }
-        >
-          {isCompleted ? (
-            <FontAwesomeIcon icon={faCheck} aria-hidden="true" />
-          ) : null}
-        </CompleteToggle>
-        <strong>{task.name}</strong>
-      </TaskTitleRow>
+      <CardBody>
+        <TaskTitle className={isCompleted ? 'completed' : ''}>
+          {task.name}
+        </TaskTitle>
 
-      {completedSubtasks > 0 && (
-        <ProgressWrapper>
+        {task?.tags && task?.tags?.length > 0 && (
+          <TagsContainer>
+            {task.tags.map((item) => (
+              <Tag key={item.id}>
+                <span
+                  className="dot"
+                  style={{ backgroundColor: getTagHex(item.color) }}
+                />
+                {item.name}
+              </Tag>
+            ))}
+          </TagsContainer>
+        )}
+
+        {completedSubtasks > 0 && (
           <ProgressContainer>
             <ProgressFill progress={progress} />
           </ProgressContainer>
-        </ProgressWrapper>
-      )}
-
-      <InfoContent>
-        <InfoItem>
-          <FontAwesomeIcon icon={faListCheck} />
-          <p>{`${completedSubtasks}/${totalSubtasks}`}</p>
-        </InfoItem>
-
-        {task?.due_date && (
-          <DueDateBadge className={dueStatus} title={dueLabel || undefined}>
-            <FontAwesomeIcon
-              icon={isCompleted ? faCircleCheck : faClock}
-              aria-hidden="true"
-            />
-            <span>{formatDate(task.due_date)}</span>
-          </DueDateBadge>
         )}
-      </InfoContent>
+
+        {hasMeta && (
+          <InfoContent>
+            {totalSubtasks > 0 && (
+              <InfoItem>
+                <FontAwesomeIcon icon={faListCheck} />
+                <p>{`${completedSubtasks}/${totalSubtasks}`}</p>
+              </InfoItem>
+            )}
+
+            {task?.due_date && (
+              <DueDateBadge className={dueStatus} title={dueLabel || undefined}>
+                <FontAwesomeIcon
+                  icon={isCompleted ? faCircleCheck : faClock}
+                  aria-hidden="true"
+                />
+                <span>{formatDate(task.due_date)}</span>
+              </DueDateBadge>
+            )}
+          </InfoContent>
+        )}
+      </CardBody>
     </>
   )
 })

@@ -1,5 +1,4 @@
 import { useBoardsContext } from '@/contexts/BoardsContext'
-import { useTheme } from '@/contexts/ThemeContext'
 import { getBoardAvatarStyle } from '@/utils/getBoardColor'
 import { handleApiError } from '@/utils/handleApiError'
 import { api } from '@/lib/axios'
@@ -18,16 +17,11 @@ const getBoardTaskCount = (board: BoardProps) =>
   ) || 0
 
 interface BoardListProps {
-  // Called after a board is activated — lets a host (e.g. the mobile sheet)
-  // close itself. The sidebar leaves it undefined and stays put.
   onNavigate?: () => void
 }
 
-// Shared board navigation list used by both the desktop sidebar and the mobile
-// boards sheet, so the two can't drift apart in look or behavior.
 export function BoardList({ onNavigate }: BoardListProps) {
   const { boards, activeBoard, handleChangeActiveBoard } = useBoardsContext()
-  const { enableDarkMode } = useTheme()
 
   const handleActivateBoard = async (board: BoardProps) => {
     try {
@@ -52,7 +46,7 @@ export function BoardList({ onNavigate }: BoardListProps) {
             className={board.name === activeBoard?.name ? 'active' : ''}
             onClick={() => handleActivateBoard(board)}
           >
-            <BoardIcon style={getBoardAvatarStyle(board.name, enableDarkMode)}>
+            <BoardIcon style={getBoardAvatarStyle(board.name)}>
               {board.name.charAt(0).toUpperCase()}
             </BoardIcon>
             <p>{board.name}</p>

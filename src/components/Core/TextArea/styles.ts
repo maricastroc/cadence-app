@@ -1,36 +1,32 @@
 import styled from 'styled-components'
 
+// Borderless textarea — same recessed-well language as Input.
 export const TextArea = styled.textarea`
   background-color: ${(props) => props.theme['field-bg']};
-  border: 1px solid ${(props) => props.theme['border-color']};
-  padding: 0.75rem 0.9rem;
-  line-height: 1.45rem;
+  border: none;
+  padding: 0.75rem 0.875rem;
+  line-height: 1.5;
   color: ${(props) => props.theme['title-color']};
-  font-size: 0.85rem;
-  border-radius: 9px;
+  font-size: 0.8125rem;
+  border-radius: 10px;
   min-height: 104px;
   resize: none;
   width: 100%;
-  transition: border-color 160ms ease, box-shadow 160ms ease,
-    background-color 160ms ease;
+  transition: box-shadow var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
 
   &::placeholder {
     color: ${(props) => props.theme['muted-color']};
   }
 
-  &:hover {
-    border-color: ${(props) => props.theme['hairline-strong']};
-  }
-
   &:focus,
   &:focus-visible {
     outline: none;
-    border-color: ${(props) => props.theme['accent-color']};
-    box-shadow: 0 0 0 3px ${(props) => props.theme['accent-soft']};
-    background-color: ${(props) => props.theme['card-color']};
+    box-shadow: inset 0 0 0 1.5px ${(props) => props.theme['muted-color']};
   }
 
   &.error {
-    border-color: ${(props) => props.theme['error-color']};
+    background-color: ${(props) => props.theme['error-soft']};
+    box-shadow: inset 0 0 0 1.5px ${(props) => props.theme['error-border']};
   }
 `

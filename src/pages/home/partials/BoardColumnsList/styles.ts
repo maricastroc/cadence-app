@@ -11,14 +11,13 @@ export const AddColumnContainer = styled.div`
      height) so the add-column target isn't a stubby box next to the columns. */
   align-self: stretch;
   min-height: 120px;
-  border: 1.5px dashed ${(props) => props.theme['hairline-strong']};
-  border-radius: 12px;
-  background-color: transparent;
-  transition: border-color 160ms, background-color 160ms;
+  border-radius: 14px;
+  background-color: ${(props) => props.theme['field-bg']};
+  box-shadow: ${(props) => props.theme['highlight-top']};
+  transition: background-color var(--dur) var(--ease);
 
   &:hover {
-    border-color: ${(props) => props.theme['accent-color']};
-    background-color: ${(props) => props.theme['accent-soft']};
+    background-color: ${(props) => props.theme['accent-fill']};
 
     button {
       color: ${(props) => props.theme['accent-text']};

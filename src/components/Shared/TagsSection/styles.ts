@@ -1,22 +1,4 @@
-import styled, { css, keyframes } from 'styled-components'
-
-const hexToRgba = (hex: string, alpha: number) => {
-  const h = hex.replace('#', '')
-  const r = parseInt(h.substring(0, 2), 16)
-  const g = parseInt(h.substring(2, 4), 16)
-  const b = parseInt(h.substring(4, 6), 16)
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`
-}
-
-// white on most chips, dark on light colors (yellow/pink) where white fails
-const readableText = (hex: string) => {
-  const h = hex.replace('#', '')
-  const r = parseInt(h.substring(0, 2), 16)
-  const g = parseInt(h.substring(2, 4), 16)
-  const b = parseInt(h.substring(4, 6), 16)
-  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
-  return luminance > 0.62 ? '#1A1A20' : '#FFFFFF'
-}
+import styled, { keyframes } from 'styled-components'
 
 const pop = keyframes`
   from {
@@ -39,16 +21,16 @@ export const TagsContainer = styled.div`
 export const TagsHeader = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.25rem;
 `
 
 export const TagsLabel = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.68rem;
+  gap: 0.4375rem;
+  font-size: 0.6875rem;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: ${(props) => props.theme['muted-color']};
 
@@ -58,10 +40,9 @@ export const TagsLabel = styled.div`
 `
 
 export const TagsHint = styled.p`
-  font-size: 0.73rem;
+  font-size: 0.75rem;
   line-height: 1.4;
   color: ${(props) => props.theme['muted-color']};
-  opacity: 0.8;
 `
 
 export const ChipsWrap = styled.div`
@@ -71,38 +52,32 @@ export const ChipsWrap = styled.div`
   width: 100%;
 `
 
+// Selection is the ONE signal: a chosen chip goes teal, never its own hue. The
+// tag's colour lives only in the dot, so identity and selection never fight.
 export const Chip = styled.button<{ $color: string; $checked: boolean }>`
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  padding: 0.4rem 0.7rem;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  font-size: 0.78rem;
+  gap: 0.4375rem;
+  padding: 0.5rem 0.6875rem;
+  border-radius: 8px;
+  border: none;
+  background-color: ${({ $checked, theme }) =>
+    $checked ? theme['card-hover'] : theme['hairline-color']};
+  color: ${({ $checked, theme }) =>
+    $checked ? theme['accent-text'] : theme['subtitle-color']};
+  font-size: 0.8125rem;
   font-weight: 500;
   line-height: 1;
   cursor: pointer;
-  transition: background-color 150ms ease, border-color 150ms ease,
-    color 150ms ease, box-shadow 150ms ease, transform 120ms ease;
+  transition: background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease), color var(--dur) var(--ease),
+    transform var(--dur-fast) var(--ease);
 
-  ${({ $checked, $color, theme }) =>
-    $checked
-      ? css`
-          background-color: ${$color};
-          border-color: ${$color};
-          color: ${readableText($color)};
-          box-shadow: 0 2px 10px ${hexToRgba($color, 0.32)};
-        `
-      : css`
-          background-color: transparent;
-          border-color: ${theme['hairline-strong']};
-          color: ${theme['text-color']};
-
-          &:hover {
-            border-color: ${hexToRgba($color, 0.55)};
-            background-color: ${hexToRgba($color, 0.1)};
-          }
-        `}
+  &:hover {
+    color: ${(props) => props.theme['text-color']};
+    background-color: ${({ $checked, theme }) =>
+      $checked ? theme['card-hover'] : theme['card-hover']};
+  }
 
   &:active {
     transform: scale(0.96);
@@ -110,8 +85,8 @@ export const Chip = styled.button<{ $color: string; $checked: boolean }>`
 `
 
 export const ChipDot = styled.span<{ $color: string }>`
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   flex-shrink: 0;
   border-radius: 50%;
   background-color: ${(props) => props.$color};
@@ -122,8 +97,8 @@ export const ChipCheck = styled.span`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: inherit;
-  animation: ${pop} 160ms ease;
+  color: ${(props) => props.theme['accent-color']};
+  animation: ${pop} 160ms var(--ease);
 
   svg {
     font-size: 0.7rem;
@@ -132,5 +107,5 @@ export const ChipCheck = styled.span`
 
 export const Empty = styled.span`
   color: ${(props) => props.theme['muted-color']};
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
 `

@@ -1,29 +1,32 @@
 import styled from 'styled-components'
 import { menuSurface } from '@/components/Core/Menu/styles'
 
+// A column reads as a container through a lighter fill + a top bevel of light.
+// The grip and menu stay visible but quiet (muted) at rest — so they're
+// discoverable and reachable on touch — and brighten on direct hover.
 export const Panel = styled.div`
   display: flex;
   flex-direction: column;
-  min-width: 17.5rem;
-  max-width: 17.5rem;
+  min-width: 18rem;
+  max-width: 18rem;
   width: 100%;
   align-self: flex-start;
   max-height: 100%;
   background-color: ${(props) => props.theme['panel-color']};
-  border: 1px solid ${(props) => props.theme['hairline-color']};
-  border-radius: 12px;
+
+  border-radius: 14px;
+  box-shadow: ${(props) => props.theme['highlight-top']};
   overflow: hidden;
-  transition: border-color 180ms ease;
+  transition: border-color var(--dur) var(--ease);
   /* The column body isn't draggable (only the grip is) — don't inherit the
      board's pan grab cursor here. */
   cursor: default;
 
-  .menu {
-    transition: color 160ms ease, background-color 160ms ease;
-  }
-
+  .column-drag-handle,
+  .menu,
   .add-task {
-    transition: color 160ms ease, background-color 160ms ease;
+    transition: color var(--dur) var(--ease),
+      background-color var(--dur) var(--ease);
   }
 
   &:hover {
@@ -32,22 +35,25 @@ export const Panel = styled.div`
 
   &.drag-overlay {
     cursor: grabbing;
-    border-color: ${(props) => props.theme['accent-color']};
-    box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.45);
+    border-color: ${(props) => props.theme['accent-soft']};
+    box-shadow: ${(props) => props.theme['shadow-lg']};
+
+    .column-drag-handle {
+      opacity: 1;
+    }
   }
 `
 
 export const ColumnHeader = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.7rem;
-  border-bottom: 1px solid ${(props) => props.theme['hairline-color']};
+  gap: 0.375rem;
+  padding: 0.625rem 0.5rem 0.5rem 0.375rem;
 
   .name {
-    font-size: 0.95rem;
+    font-size: 0.8125rem;
     font-weight: 600;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.01em;
     color: ${(props) => props.theme['title-color']};
     white-space: nowrap;
     overflow: hidden;
@@ -55,8 +61,9 @@ export const ColumnHeader = styled.div`
   }
 
   .count {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 500;
+    font-variant-numeric: tabular-nums;
     color: ${(props) => props.theme['muted-color']};
   }
 `
@@ -66,8 +73,8 @@ export const DragHandle = styled.button`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 22px;
-  height: 26px;
+  width: 20px;
+  height: 24px;
   padding: 0;
   background-color: transparent;
   border: none;
@@ -75,14 +82,13 @@ export const DragHandle = styled.button`
   color: ${(props) => props.theme['muted-color']};
   cursor: grab;
   touch-action: none;
-  transition: color 160ms ease, background-color 160ms ease;
 
   svg {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
 
   &:hover {
-    color: ${(props) => props.theme['title-color']};
+    color: ${(props) => props.theme['subtitle-color']};
     background-color: ${(props) => props.theme['card-hover']};
   }
 
@@ -91,7 +97,7 @@ export const DragHandle = styled.button`
   }
 
   &:focus-visible {
-    outline: 2px solid ${(props) => props.theme['accent-color']};
+    outline: 2px solid ${(props) => props.theme['muted-color']};
     outline-offset: 2px;
     color: ${(props) => props.theme['title-color']};
   }
@@ -113,17 +119,18 @@ export const MenuButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   background-color: transparent;
   border: none;
   border-radius: 7px;
   color: ${(props) => props.theme['muted-color']};
   cursor: pointer;
-  transition: color 160ms ease, background-color 160ms ease;
+  transition: color var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
 
   svg {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   &:hover,
@@ -133,7 +140,7 @@ export const MenuButton = styled.button`
   }
 
   &:focus-visible {
-    outline: 2px solid ${(props) => props.theme['accent-color']};
+    outline: 2px solid ${(props) => props.theme['muted-color']};
     outline-offset: 2px;
     color: ${(props) => props.theme['title-color']};
   }
@@ -142,7 +149,7 @@ export const MenuButton = styled.button`
 export const MenuDropdown = styled.div`
   ${menuSurface}
   position: absolute;
-  top: 2.1rem;
+  top: 2rem;
   right: 0;
   width: 11rem;
   z-index: 9999;
@@ -151,11 +158,11 @@ export const MenuDropdown = styled.div`
 export const TasksContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.5rem;
   width: 100%;
   flex: 1;
   min-height: 0;
-  padding: 0.6rem;
+  padding: 0.5rem;
   overflow-y: auto;
   overscroll-behavior: contain;
 
@@ -181,20 +188,20 @@ export const EmptyTasksContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
   width: 100%;
-  min-height: 92px;
-  border: dashed 1.5px ${(props) => props.theme['hairline-strong']};
-  border-radius: 9px;
+  min-height: 96px;
+  background-color: ${(props) => props.theme['field-bg']};
+  border-radius: 10px;
   color: ${(props) => props.theme['muted-color']};
 
   svg {
-    font-size: 1.1rem;
-    opacity: 0.7;
+    font-size: 1.05rem;
+    opacity: 0.6;
   }
 
   span {
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     font-weight: 500;
   }
 `
@@ -203,23 +210,21 @@ export const AddTaskButton = styled.button`
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.5rem;
   width: 100%;
-  padding: 0.65rem 0.8rem;
+  padding: 0.625rem 0.75rem;
   background: transparent;
   border: none;
-  border-top: 1px solid ${(props) => props.theme['hairline-color']};
   color: ${(props) => props.theme['muted-color']};
-  font-size: 0.76rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  transition: color 140ms, background-color 140ms;
 
   svg {
     font-size: 0.75rem;
   }
 
   &:hover {
-    color: ${(props) => props.theme['accent-text']};
-    background-color: ${(props) => props.theme['accent-soft']};
+    color: ${(props) => props.theme['title-color']};
+    background-color: ${(props) => props.theme['card-color']};
   }
 `

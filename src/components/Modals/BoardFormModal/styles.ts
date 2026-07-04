@@ -19,24 +19,18 @@ export const ColumnRow = styled.div`
   height: 44px;
   padding: 0 0.4rem 0 0.65rem;
   background-color: ${(props) => props.theme['field-bg']};
-  border: 1px solid ${(props) => props.theme['border-color']};
-  border-radius: 9px;
-  transition: border-color 160ms ease, box-shadow 160ms ease,
-    background-color 160ms ease;
-
-  &:hover {
-    border-color: ${(props) => props.theme['hairline-strong']};
-  }
+  border: none;
+  border-radius: 10px;
+  transition: box-shadow var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
 
   &:focus-within {
-    border-color: ${(props) => props.theme['accent-color']};
-    box-shadow: 0 0 0 3px ${(props) => props.theme['accent-soft']};
-    background-color: ${(props) => props.theme['card-color']};
+    box-shadow: inset 0 0 0 1.5px ${(props) => props.theme['muted-color']};
   }
 
   &.error {
-    border-color: ${(props) => props.theme['error-border']};
     background-color: ${(props) => props.theme['error-soft']};
+    box-shadow: inset 0 0 0 1.5px ${(props) => props.theme['error-border']};
   }
 
   &.error:focus-within {

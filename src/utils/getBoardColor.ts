@@ -18,14 +18,11 @@ export const getBoardColor = (name: string) => {
 }
 
 /**
- * Theme-aware board avatar. The soft tint + full-color initial reads in dark
- * mode, but in light mode it both collides with the (teal) active-tab highlight
- * and fails contrast on the initial — so light mode uses a solid darkened chip
- * with a white initial, which separates cleanly from the sidebar and the tab.
+ * Board avatar: a solid, mid-tone chip of the board colour with a white initial,
+ * in both themes. Opaque (no semi-transparent fills) and saturated enough to
+ * stand out on the neutral-grey active row as well as the darker sidebar.
  */
-export const getBoardAvatarStyle = (name: string, isDark: boolean) => {
+export const getBoardAvatarStyle = (name: string) => {
   const base = getBoardColor(name)
-  return isDark
-    ? { backgroundColor: `${base}22`, color: base }
-    : { backgroundColor: darken(base), color: '#FFFFFF' }
+  return { backgroundColor: darken(base), color: '#FFFFFF' }
 }

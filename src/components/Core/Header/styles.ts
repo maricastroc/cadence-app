@@ -3,18 +3,17 @@ import styled from 'styled-components'
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: 1.25rem;
   width: 100%;
   max-width: 100vw;
   padding: 1rem;
   background-color: ${(props) => props.theme['canvas-color']};
-  border-bottom: solid 1px ${(props) => props.theme['hairline-color']};
   position: sticky;
   top: 0;
   z-index: 10;
 
   @media (min-width: 768px) {
-    padding: 1.1rem 1.5rem;
+    padding: 1.125rem 1.5rem;
     margin-left: 220px;
     width: auto;
 
@@ -34,33 +33,29 @@ export const TopRow = styled.div`
 export const TitleBlock = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.5rem;
   min-width: 0;
 `
 
 export const Eyebrow = styled.div`
-  font-size: 0.66rem;
+  font-size: 0.6875rem;
   font-weight: 600;
-  letter-spacing: 0.7px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: ${(props) => props.theme['muted-color']};
-  margin-bottom: -0.3rem;
+  margin-bottom: -0.25rem;
 `
 
 export const BoardName = styled.h1`
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   font-weight: 600;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.024em;
   line-height: 1.15;
   color: ${(props) => props.theme['title-color']};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 60vw;
-
-  @media (min-width: 920px) {
-    font-size: 1.6rem;
-  }
 `
 
 export const BoardNameRow = styled.div`
@@ -77,34 +72,37 @@ export const BoardNameRow = styled.div`
     .chevron {
       display: inline-flex;
       flex-shrink: 0;
-      color: ${(props) => props.theme['accent-color']};
-      font-size: 0.9rem;
+      color: ${(props) => props.theme['muted-color']};
+      font-size: 0.85rem;
     }
   }
 `
 
+// Board metadata reads as quiet inline chips — the same hairline-fill language
+// as the tag chips on cards, so the whole product rhymes. Only "% done" carries
+// a dot of the accent, because it's the one number worth a glance.
 export const MetricStrip = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.375rem;
   flex-wrap: wrap;
 `
 
 export const StatChip = styled.div`
   display: inline-flex;
   align-items: center;
-  gap: 0.32rem;
-  height: 22px;
+  gap: 0.375rem;
+  height: 24px;
   padding: 0 0.5rem;
   border-radius: 7px;
-  background-color: ${(props) => props.theme['panel-color']};
-  border: 1px solid ${(props) => props.theme['hairline-color']};
-  font-size: 0.7rem;
+  background-color: ${(props) => props.theme['hairline-color']};
+  font-size: 0.75rem;
   color: ${(props) => props.theme['muted-color']};
   white-space: nowrap;
 
   strong {
-    font-weight: 500;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
     color: ${(props) => props.theme['text-color']};
   }
 
@@ -119,7 +117,7 @@ export const StatChip = styled.div`
 export const BoardNameContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.4375rem;
   min-width: 0;
   cursor: default;
 
@@ -140,17 +138,22 @@ export const ActionBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
-  height: 40px;
-  padding: 0 1rem;
+  gap: 0.4375rem;
+  height: 38px;
+  padding: 0 0.875rem;
   border-radius: 10px;
   border: none;
   background-color: ${(props) => props.theme['accent-color']};
-  transition: background-color 160ms ease, box-shadow 160ms ease,
-    transform 120ms ease;
+  box-shadow: ${(props) => props.theme['highlight-top']},
+    0 2px 6px -1px ${(props) => props.theme['accent-glow']};
+  transition: background-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease), transform var(--dur-fast) var(--ease);
 
   &:hover {
-    box-shadow: 0 0 0 4px ${(props) => props.theme['accent-soft']};
+    background-color: ${(props) => props.theme['accent-hover']};
+    box-shadow: ${(props) => props.theme['highlight-top']},
+      0 2px 10px -1px ${(props) => props.theme['accent-glow']},
+      0 0 0 3px ${(props) => props.theme['accent-soft']};
   }
 
   &:active {
@@ -163,18 +166,14 @@ export const ActionBtn = styled.button`
   }
 
   p {
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: ${(props) => props.theme['button-title']};
   }
 
-  &:hover {
-    background-color: ${(props) => props.theme['accent-hover']};
-  }
-
   &.secondary {
     background-color: ${(props) => props.theme['card-color']};
-    border: 1px solid ${(props) => props.theme['border-color']};
+    box-shadow: ${(props) => props.theme['shadow-card']};
 
     svg {
       color: ${(props) => props.theme['subtitle-color']};
@@ -186,7 +185,7 @@ export const ActionBtn = styled.button`
 
     &:hover {
       background-color: ${(props) => props.theme['card-hover']};
-      border-color: ${(props) => props.theme['hairline-strong']};
+      box-shadow: ${(props) => props.theme['shadow-card-hover']};
     }
   }
 
@@ -206,19 +205,25 @@ export const EditDeleteBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   background-color: ${(props) => props.theme['card-color']};
-  border: 1px solid ${(props) => props.theme['border-color']};
-  border-radius: 9px;
+  box-shadow: ${(props) => props.theme['shadow-card']};
+  border: none;
+  border-radius: 10px;
+  color: ${(props) => props.theme['subtitle-color']};
+  transition: background-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease), color var(--dur) var(--ease);
 
   svg {
     color: ${(props) => props.theme['subtitle-color']};
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   &:hover {
     background-color: ${(props) => props.theme['card-hover']};
+    box-shadow: ${(props) => props.theme['shadow-card-hover']};
+    color: ${(props) => props.theme['title-color']};
   }
 `
 
@@ -227,7 +232,7 @@ export const Toolbar = styled.div`
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
-  transition: opacity 160ms ease;
+  transition: opacity var(--dur) var(--ease);
 
   &.disabled {
     opacity: 0.4;
@@ -242,15 +247,15 @@ export const SearchBox = styled.div`
   gap: 0.5rem;
   flex: 1;
   min-width: 160px;
-  height: 40px;
-  padding: 0 0.8rem;
-  border-radius: 9px;
+  height: 42px;
+  padding: 0 0.875rem;
+  border-radius: 10px;
   background-color: ${(props) => props.theme['card-color']};
-  border: 1px solid ${(props) => props.theme['border-color']};
-  transition: border-color 160ms;
+  box-shadow: ${(props) => props.theme['shadow-card']};
+  transition: box-shadow var(--dur) var(--ease);
 
   svg {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: ${(props) => props.theme['muted-color']};
     flex-shrink: 0;
   }
@@ -261,7 +266,7 @@ export const SearchBox = styled.div`
     border: none;
     outline: none;
     background: transparent;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     color: ${(props) => props.theme['text-color']};
 
     &::placeholder {
@@ -288,16 +293,15 @@ export const SearchBox = styled.div`
     padding: 0 5px;
     border-radius: 5px;
     background-color: ${(props) => props.theme['kbd-bg']};
-    border: 1px solid ${(props) => props.theme['hairline-color']};
-    font-size: 0.66rem;
+    font-size: 0.6875rem;
     font-weight: 600;
     color: ${(props) => props.theme['muted-color']};
     flex-shrink: 0;
   }
 
   &:focus-within {
-    border-color: ${(props) => props.theme['accent-color']};
-    box-shadow: 0 0 0 3px ${(props) => props.theme['accent-soft']};
+    box-shadow: ${(props) => props.theme['shadow-card']},
+      inset 0 0 0 1.5px ${(props) => props.theme['muted-color']};
 
     .kbd {
       opacity: 0;
@@ -313,16 +317,18 @@ export const ToolButton = styled.button`
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  height: 40px;
-  padding: 0 0.9rem;
-  border-radius: 9px;
+  gap: 0.4375rem;
+  height: 42px;
+  padding: 0 0.875rem;
+  border-radius: 10px;
   background-color: ${(props) => props.theme['card-color']};
-  border: 1px solid ${(props) => props.theme['border-color']};
+  box-shadow: ${(props) => props.theme['shadow-card']};
+  border: none;
   color: ${(props) => props.theme['text-color']};
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  transition: background-color 160ms, border-color 160ms;
+  transition: background-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease), color var(--dur) var(--ease);
 
   svg {
     font-size: 0.8rem;
@@ -337,7 +343,7 @@ export const ToolButton = styled.button`
     height: 16px;
     padding: 0 4px;
     border-radius: 8px;
-    font-size: 0.62rem;
+    font-size: 0.625rem;
     font-weight: 700;
     background-color: ${(props) => props.theme['accent-color']};
     color: ${(props) => props.theme['accent-on']};
@@ -346,12 +352,13 @@ export const ToolButton = styled.button`
   &:hover,
   &.open {
     background-color: ${(props) => props.theme['card-hover']};
-    border-color: ${(props) => props.theme['hairline-strong']};
+    box-shadow: ${(props) => props.theme['shadow-card-hover']};
   }
 
   &.active {
-    border-color: ${(props) => props.theme['accent-color']};
     color: ${(props) => props.theme['accent-text']};
+    box-shadow: ${(props) => props.theme['shadow-card']},
+      inset 0 0 0 1.5px ${(props) => props.theme['accent-color']};
 
     svg {
       color: ${(props) => props.theme['accent-color']};
@@ -364,12 +371,11 @@ export const Dropdown = styled.div`
   top: calc(100% + 6px);
   right: 0;
   z-index: 50;
-  min-width: 200px;
-  padding: 0.4rem;
-  border-radius: 10px;
+  min-width: 208px;
+  padding: 0.375rem;
+  border-radius: 12px;
   background-color: ${(props) => props.theme['card-color']};
-  border: 1px solid ${(props) => props.theme['hairline-strong']};
-  box-shadow: ${(props) => props.theme['shadow-md']};
+  box-shadow: ${(props) => props.theme['shadow-pop']};
   display: flex;
   flex-direction: column;
   gap: 1px;
@@ -378,10 +384,10 @@ export const Dropdown = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.35rem 0.5rem 0.5rem;
-    font-size: 0.66rem;
+    padding: 0.375rem 0.5rem 0.5rem;
+    font-size: 0.6875rem;
     font-weight: 700;
-    letter-spacing: 0.6px;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: ${(props) => props.theme['muted-color']};
 
@@ -389,9 +395,9 @@ export const Dropdown = styled.div`
       cursor: pointer;
       background: none;
       border: none;
-      font-size: 0.66rem;
+      font-size: 0.6875rem;
       font-weight: 700;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.02em;
       color: ${(props) => props.theme['accent-text']};
       text-transform: none;
     }
@@ -399,7 +405,7 @@ export const Dropdown = styled.div`
 
   .empty {
     padding: 0.5rem;
-    font-size: 0.76rem;
+    font-size: 0.8125rem;
     color: ${(props) => props.theme['muted-color']};
   }
 `
@@ -408,21 +414,21 @@ export const DropdownItem = styled.button`
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.5rem;
   width: 100%;
-  padding: 0.5rem 0.5rem;
-  border-radius: 7px;
+  padding: 0.5rem;
+  border-radius: 8px;
   background: transparent;
   border: none;
   text-align: left;
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   color: ${(props) => props.theme['text-color']};
-  transition: background-color 140ms;
+  transition: background-color var(--dur-fast) var(--ease);
 
   .swatch {
     width: 10px;
     height: 10px;
-    border-radius: 3px;
+    border-radius: 50%;
     flex-shrink: 0;
   }
 
@@ -441,7 +447,7 @@ export const DropdownItem = styled.button`
   }
 
   &:hover {
-    background-color: ${(props) => props.theme['hairline-color']};
+    background-color: ${(props) => props.theme['card-hover']};
   }
 
   &.selected {

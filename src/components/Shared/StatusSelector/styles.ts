@@ -6,7 +6,7 @@ export const StatusSelectorBtn = styled.button`
   padding: 0.5rem 0.6rem 0.5rem 2rem;
   align-items: center;
   cursor: pointer;
-  border-radius: 7px;
+  border-radius: 8px;
   width: 100%;
   background-color: transparent;
   border: none;
@@ -14,7 +14,8 @@ export const StatusSelectorBtn = styled.button`
   font-weight: 500;
   text-align: left;
   color: ${(props) => props.theme['text-color']};
-  transition: background-color 140ms ease, color 140ms ease;
+  transition: background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
 
   &:hover {
     background-color: ${(props) => props.theme['card-hover']};
