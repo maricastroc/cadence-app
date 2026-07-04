@@ -1,7 +1,7 @@
 import { Label } from '@/components/Core/Label'
 import { StatusContainer, StatusSelectorContainer } from './styles'
 import { SelectStatus } from '@/components/Core/SelectStatus'
-import { RefObject } from 'react'
+import { RefObject, useEffect } from 'react'
 import { StatusSelector } from '@/components/Shared/StatusSelector'
 import { BoardColumnProps } from '@/@types/board-column'
 import { BoardProps } from '@/@types/board'
@@ -25,6 +25,16 @@ export const StatusSection = ({
   onToggleOpen,
   handleChangeStatus,
 }: Props) => {
+  // The options list opens inline near the bottom of the modal; bring it fully
+  // into view on open so the user never has to hunt-scroll for the items.
+  useEffect(() => {
+    if (!isOpen) return
+    const id = requestAnimationFrame(() =>
+      statusRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }),
+    )
+    return () => cancelAnimationFrame(id)
+  }, [isOpen, statusRef])
+
   return (
     <StatusContainer>
       <Label>Current Status</Label>

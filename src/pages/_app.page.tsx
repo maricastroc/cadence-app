@@ -43,11 +43,6 @@ function MyApp({ Component, pageProps }: AppProps) {
                       color: enableDarkMode
                         ? darkTheme['text-color']
                         : lightTheme['title-color'],
-                      border: `1px solid ${
-                        enableDarkMode
-                          ? darkTheme['hairline-strong']
-                          : lightTheme['hairline-strong']
-                      }`,
                       boxShadow: enableDarkMode
                         ? darkTheme['shadow-md']
                         : lightTheme['shadow-md'],

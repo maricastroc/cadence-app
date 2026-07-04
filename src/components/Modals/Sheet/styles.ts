@@ -160,7 +160,9 @@ export const FieldGroup = styled.div`
   flex-direction: column;
   width: 100%;
 
-  span {
+  /* Direct child only — otherwise this error-red leaks into any nested <span>,
+     e.g. the status dropdown's option labels. */
+  & > span {
     margin-top: 0.35rem;
     display: block;
     color: ${(props) => props.theme['error-color']};
@@ -169,7 +171,7 @@ export const FieldGroup = styled.div`
   }
 
   @media (max-width: 767px) {
-    span {
+    & > span {
       font-size: 0.8125rem;
     }
   }

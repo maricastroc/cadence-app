@@ -34,6 +34,15 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-text-size-adjust: 100%;
   }
 
+  /* Nudge the whole desktop UI up a touch — the compact type read a little
+     small. rem-based, so type and spacing scale together and stay in
+     proportion. Phones keep the default 16px base (their sizing is tuned). */
+  @media (min-width: 768px) {
+    html {
+      font-size: 106.25%;
+    }
+  }
+
   body {
     background-color: ${(props) => props.theme['bg-color']};
     color: ${(props) => props.theme['title-color']};

@@ -4,7 +4,10 @@ export const TaskCardContainer = styled.div`
   cursor: grab;
   display: flex;
   align-items: flex-start;
-  gap: 0.625rem;
+  /* No flex gap: the completion toggle owns the left spacing via its own
+     width + margin, so it can collapse to zero and let the title use the full
+     width until revealed on hover. */
+  gap: 0;
   padding: 0.75rem;
   outline: none;
   border-radius: 10px;
@@ -40,13 +43,14 @@ export const TaskCardContainer = styled.div`
     outline-offset: 2px;
   }
 
+  /* The lifted card that follows the cursor — Trello-style: a soft shadow and
+     a slight tilt, gone slightly translucent, rather than a hard teal ring. */
   &.dragging {
     cursor: grabbing;
     background-color: ${(props) => props.theme['card-lift']};
-    border-color: ${(props) => props.theme['accent-color']};
-    box-shadow: ${(props) => props.theme['shadow-lg']},
-      0 0 0 1px ${(props) => props.theme['accent-color']};
-    transform: rotate(1.2deg) scale(1.02);
+    box-shadow: ${(props) => props.theme['shadow-lg']};
+    transform: rotate(2.5deg) scale(1.02);
+    opacity: 0.9;
   }
 
   /* When dragging is off (loading / filtering), the card is only clickable —
@@ -57,7 +61,7 @@ export const TaskCardContainer = styled.div`
   }
 
   @media (max-width: 767px) {
-    gap: 0.8rem;
+    gap: 0;
     padding: 0.9rem 0.95rem;
     border-radius: 14px;
     box-shadow: ${(props) => props.theme['shadow-sm']};
@@ -102,6 +106,7 @@ export const TaskTitle = styled.strong`
 export const CompleteToggle = styled.button`
   flex-shrink: 0;
   margin-top: 1px;
+  margin-right: 0.625rem;
   width: 16px;
   height: 16px;
   padding: 0;
@@ -113,16 +118,37 @@ export const CompleteToggle = styled.button`
   background-color: transparent;
   color: #fff;
   cursor: pointer;
+  overflow: hidden;
   transition: border-color var(--dur-fast) var(--ease),
-    background-color var(--dur-fast) var(--ease);
+    background-color var(--dur-fast) var(--ease), opacity var(--dur) var(--ease),
+    width var(--dur) var(--ease), margin-right var(--dur) var(--ease);
 
   svg {
     font-size: 0.55rem;
   }
 
+  /* Desktop, Trello-style: the circle collapses to zero width so the title
+     spans the full card, then slides open on hover (or focus, or when the task
+     is already done) — the content shifts right to make room for the check. */
   @media (hover: hover) {
+    width: 0;
+    margin-right: 0;
+    border-width: 0;
+    opacity: 0;
+
     &:hover {
       border-color: ${(props) => props.theme['completed-color']};
+    }
+
+    .task-card:hover &,
+    .task-card:focus-within &,
+    .task-card.dragging &,
+    &:focus-visible,
+    &.completed {
+      width: 16px;
+      margin-right: 0.625rem;
+      border-width: 1.5px;
+      opacity: 1;
     }
   }
 
@@ -141,6 +167,7 @@ export const CompleteToggle = styled.button`
     width: 22px;
     height: 22px;
     margin-top: 2px;
+    margin-right: 0.8rem;
     position: relative;
 
     svg {
