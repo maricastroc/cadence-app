@@ -31,7 +31,7 @@ export const StatusSection = ({
     if (!isOpen) return
     const id = requestAnimationFrame(() =>
       statusRef.current?.scrollIntoView({
-        block: 'nearest',
+        block: 'end',
         behavior: 'smooth',
       }),
     )

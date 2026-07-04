@@ -112,7 +112,8 @@ export const StatChip = styled.div`
   height: 24px;
   padding: 0 0.5rem;
   border-radius: 7px;
-  background-color: ${(props) => props.theme['hairline-color']};
+  background-color: ${(props) => props.theme['card-color']};
+  box-shadow: ${(props) => props.theme['shadow-xs']};
   font-size: 0.75rem;
   color: ${(props) => props.theme['muted-color']};
   white-space: nowrap;
