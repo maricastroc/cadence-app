@@ -5,12 +5,15 @@ import {
   OptionsBtn,
   OptionsContainer,
   OptionsModal,
+  TaskSubtitle,
   TaskTitle,
+  TitleGroup,
 } from './styles'
 import { HeaderIcon } from '../../../Sheet/styles'
 import { MenuDivider, MenuItem } from '@/components/Core/Menu/styles'
 import {
   faEllipsisVertical,
+  faLayerGroup,
   faPen,
   faSquareCheck,
   faTrashCan,
@@ -21,6 +24,7 @@ interface Props {
   enableDarkMode: boolean
   isActionsModalOpen: boolean
   taskName: string
+  subtitle?: string
   onToggleActionsModal: (value: boolean) => void
   onToggleEditModal: (value: boolean) => void
   onToggleDeleteModal: (value: boolean) => void
@@ -29,6 +33,7 @@ interface Props {
 export const Header = ({
   enableDarkMode,
   taskName,
+  subtitle,
   isActionsModalOpen,
   onToggleActionsModal,
   onToggleDeleteModal,
@@ -45,7 +50,15 @@ export const Header = ({
       <HeaderIcon>
         <FontAwesomeIcon icon={faSquareCheck} />
       </HeaderIcon>
-      <TaskTitle>{taskName}</TaskTitle>
+      <TitleGroup>
+        <TaskTitle>{taskName}</TaskTitle>
+        {subtitle && (
+          <TaskSubtitle>
+            <FontAwesomeIcon icon={faLayerGroup} />
+            {subtitle}
+          </TaskSubtitle>
+        )}
+      </TitleGroup>
       <OptionsContainer ref={optionsRef}>
         <OptionsBtn
           aria-label="Task options"

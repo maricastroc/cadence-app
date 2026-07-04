@@ -6,7 +6,6 @@ import {
   BoardName,
   BoardNameContainer,
   BoardNameRow,
-  Eyebrow,
   MetricStrip,
   StatChip,
   TitleBlock,
@@ -42,7 +41,6 @@ export function BoardHeading({ activeBoard, metrics, isSmallerThanSm }: Props) {
       <Dialog.Trigger asChild>
         <BoardNameContainer onClick={() => isSmallerThanSm && open()}>
           <TitleBlock>
-            <Eyebrow>Boards</Eyebrow>
             <BoardNameRow>
               <BoardName>{activeBoard?.name || 'No board selected'}</BoardName>
               {isSmallerThanSm && (

@@ -5,19 +5,38 @@ import { menuSurface } from '@/components/Core/Menu/styles'
 export const LayoutContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 0.75rem;
   width: 100%;
-  padding: 2rem 1.5rem 1.2rem;
+  padding: 1.5rem 1.5rem 1.25rem;
+`
+
+export const TitleGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.1875rem;
+  flex: 1;
+  min-width: 0;
 `
 
 export const TaskTitle = styled(RadixTitle)`
-  flex: 1;
-  min-width: 0;
   font-size: ${(props) => props.theme['heading-l']};
   font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.3;
+  letter-spacing: -0.018em;
+  line-height: 1.35;
   color: ${(props) => props.theme['title-color']};
+`
+
+export const TaskSubtitle = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: ${(props) => props.theme['muted-color']};
+
+  svg {
+    font-size: 0.7rem;
+  }
 `
 
 export const OptionsContainer = styled.div`

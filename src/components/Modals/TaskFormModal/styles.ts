@@ -37,6 +37,33 @@ export const SubtasksWrapper = styled.div`
   margin-bottom: 0.7rem;
 `
 
+// Fills the otherwise-empty subtasks area so the section doesn't read as a void
+// before the first subtask is added.
+export const SubtasksEmpty = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  min-height: 72px;
+  padding: 0.75rem;
+  border-radius: 10px;
+  background-color: ${(props) => props.theme['field-bg']};
+  color: ${(props) => props.theme['muted-color']};
+  text-align: center;
+
+  svg {
+    font-size: 1rem;
+    opacity: 0.7;
+  }
+
+  span {
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+`
+
 export const StyledDatePickerWrapper = styled.div`
   width: 100%;
 
@@ -46,9 +73,8 @@ export const StyledDatePickerWrapper = styled.div`
 
   .react-datepicker {
     background-color: ${(props) => props.theme['card-color']};
-    border: 1px solid ${(props) => props.theme['hairline-strong']};
     border-radius: 12px;
-    box-shadow: ${(props) => props.theme['shadow-md']};
+    box-shadow: ${(props) => props.theme['shadow-pop']};
     padding: 0.7rem;
     font-family: inherit;
 

@@ -27,6 +27,7 @@ import {
   StyledDatePickerWrapper,
   SubtaskDragHandle,
   SubtaskRow,
+  SubtasksEmpty,
   SubtasksWrapper,
 } from './styles'
 import { Sheet, Kbd } from '../Sheet'
@@ -275,25 +276,32 @@ export function TaskFormModal({
               Subtasks
             </Sheet.SectionLabel>
             <SubtasksWrapper>
-              <DndContext
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragEnd={handleReorderSubtask}
-              >
-                <SortableContext
-                  items={subtasks.map((subtask) => String(subtask.id))}
-                  strategy={verticalListSortingStrategy}
+              {subtasks.length === 0 ? (
+                <SubtasksEmpty>
+                  <FontAwesomeIcon icon={faListCheck} />
+                  <span>No subtasks yet — break this task into steps.</span>
+                </SubtasksEmpty>
+              ) : (
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleReorderSubtask}
                 >
-                  {subtasks.map((subtask, index) => (
-                    <SortableSubtaskField
-                      key={subtask.id}
-                      id={String(subtask.id)}
-                    >
-                      {renderSubtaskInput(index, subtask)}
-                    </SortableSubtaskField>
-                  ))}
-                </SortableContext>
-              </DndContext>
+                  <SortableContext
+                    items={subtasks.map((subtask) => String(subtask.id))}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    {subtasks.map((subtask, index) => (
+                      <SortableSubtaskField
+                        key={subtask.id}
+                        id={String(subtask.id)}
+                      >
+                        {renderSubtaskInput(index, subtask)}
+                      </SortableSubtaskField>
+                    ))}
+                  </SortableContext>
+                </DndContext>
+              )}
               <ErrorMessage
                 style={{ marginTop: '-0.25rem' }}
                 message={errors?.subtasks?.message}

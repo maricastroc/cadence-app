@@ -1,13 +1,17 @@
 import styled from 'styled-components'
 
+// The card is a two-column flex: a completion toggle outdented to the left, and
+// a single content column (title → tags → progress → meta) that all share one
+// left edge. Depth reads through a top bevel of light + a soft drop; hover lifts
+// the fill, brightens the hairline and floats it 1px. Everything on a 2px grid.
 export const TaskCardContainer = styled.div`
   cursor: grab;
   display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  padding: 0.85rem 0.8rem 1rem;
+  align-items: flex-start;
+  gap: 0.625rem;
+  padding: 0.75rem;
   outline: none;
-  border-radius: 11px;
+  border-radius: 10px;
   background-color: ${(props) => props.theme['card-color']};
 
   /* Touch drag is a press-and-hold (see the TouchSensor delay). Suppress iOS's
@@ -18,25 +22,18 @@ export const TaskCardContainer = styled.div`
 
   border: 1px solid ${(props) => props.theme['hairline-color']};
   box-shadow: ${(props) => props.theme['shadow-xs']};
+  box-shadow: ${(props) => props.theme['shadow-card']};
   width: 100%;
-  align-items: flex-start;
-  transition: background-color 180ms ease, border-color 180ms ease,
-    box-shadow 180ms ease, transform 180ms ease;
+  transition: background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
   will-change: transform;
-
-  strong {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: ${(props) => props.theme['title-color']};
-    line-height: 1.4;
-    letter-spacing: -0.01em;
-  }
 
   &:hover {
     background-color: ${(props) => props.theme['card-lift']};
-    border-color: ${(props) => props.theme['hairline-strong']};
-    box-shadow: ${(props) => props.theme['shadow-sm']};
-    transform: translateY(-2px);
+    border-color: ${(props) => props.theme['accent-soft']};
+    box-shadow: ${(props) => props.theme['shadow-card-hover']};
+    transform: translateY(-1px);
   }
 
   &:active {
@@ -44,7 +41,7 @@ export const TaskCardContainer = styled.div`
   }
 
   &:focus-visible {
-    outline: 2px solid ${(props) => props.theme['accent-color']};
+    outline: 2px solid ${(props) => props.theme['muted-color']};
     outline-offset: 2px;
   }
 
@@ -54,35 +51,47 @@ export const TaskCardContainer = styled.div`
     border-color: ${(props) => props.theme['accent-color']};
     box-shadow: ${(props) => props.theme['shadow-lg']},
       0 0 0 1px ${(props) => props.theme['accent-color']};
+    transform: rotate(1.2deg) scale(1.02);
   }
 
   /* When dragging is off (loading / filtering), the card is only clickable —
-     drop the grab affordance so it doesn't promise a move that won't happen.
-     Declared last so it wins over :active on equal specificity. */
+     drop the grab affordance so it doesn't promise a move that won't happen. */
   &.drag-disabled,
   &.drag-disabled:active {
     cursor: default;
   }
 `
 
-export const TaskTitleRow = styled.div`
+// The single content column. min-width:0 lets the title ellipsis behave.
+export const CardBody = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
   gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
   width: 100%;
+`
 
-  &.completed strong {
+export const TaskTitle = styled.strong`
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: ${(props) => props.theme['title-color']};
+  line-height: 1.45;
+  letter-spacing: -0.012em;
+
+  &.completed {
     color: ${(props) => props.theme['muted-color']};
     text-decoration: line-through;
     text-decoration-color: ${(props) => props.theme['muted-color']};
   }
 `
 
-// A checkbox-style completion toggle. Hollow circle when open; fills with the
-// completed colour and a check when done.
+// Hollow ring by default; fills with the completed colour + check when done.
+// Quiet at rest, it only asserts itself on hover or once complete.
 export const CompleteToggle = styled.button`
   flex-shrink: 0;
-  margin-top: 2px;
+  margin-top: 1px;
   width: 16px;
   height: 16px;
   padding: 0;
@@ -94,7 +103,8 @@ export const CompleteToggle = styled.button`
   background-color: transparent;
   color: #fff;
   cursor: pointer;
-  transition: border-color 140ms ease, background-color 140ms ease;
+  transition: border-color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease);
 
   svg {
     font-size: 0.55rem;
@@ -118,30 +128,38 @@ export const TagsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.375rem;
   width: 100%;
 `
 
+// Neutral chip carrying a single dot of the tag's colour. Colour identity lives
+// in the 5px dot; the chip itself stays quiet so a card with 3 tags never turns
+// into a chromatic pile-up.
 export const Tag = styled.span`
   display: inline-flex;
   align-items: center;
-  height: 16px;
-  padding: 0 0.35rem;
-  border-radius: 4px;
-  font-size: 0.7rem;
+  gap: 0.3125rem;
+  height: 18px;
+  padding: 0 0.4375rem;
+  border-radius: 5px;
+  background-color: ${(props) => props.theme['hairline-color']};
+  color: ${(props) => props.theme['subtitle-color']};
+  font-size: 0.6875rem;
   font-weight: 500;
-  letter-spacing: 0;
+  letter-spacing: 0.005em;
   white-space: nowrap;
-  filter: saturate(0.8);
-`
 
-export const ProgressWrapper = styled.div`
-  width: 100%;
+  .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
 `
 
 export const ProgressContainer = styled.div`
   width: 100%;
-  height: 4px;
+  height: 3px;
   background-color: ${(props) => props.theme['hairline-strong']};
   border-radius: 3px;
   overflow: hidden;
@@ -151,27 +169,28 @@ export const ProgressFill = styled.div<{ progress: number }>`
   height: 100%;
   width: ${(props) => props.progress}%;
   background-color: ${(props) => props.theme['accent-color']};
-  transition: width 0.3s ease-in-out;
+  transition: width var(--dur-slow) var(--ease);
   border-radius: 3px;
 `
 
 export const InfoContent = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.9rem;
+  gap: 0.875rem;
   width: 100%;
 `
 
 export const InfoItem = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.3125rem;
   color: ${(props) => props.theme['muted-color']};
 
   p {
     color: ${(props) => props.theme['muted-color']};
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 500;
+    font-variant-numeric: tabular-nums;
   }
 
   svg {
@@ -180,16 +199,16 @@ export const InfoItem = styled.div`
   }
 `
 
-// Trello-style due-date pill: a plain muted clock + date when there's nothing
-// to flag, tinting into a coloured pill once the date is overdue / due soon, or
-// the task is done. The status rides on the pill, so the date itself stays
-// readable instead of competing with a separate label.
+// Due-date pill: a plain muted clock + date when there's nothing to flag, tinting
+// into a soft coloured pill once overdue / due soon, or complete. The status
+// rides on the pill so the date stays readable instead of competing with a label.
 export const DueDateBadge = styled.div`
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 500;
+  font-variant-numeric: tabular-nums;
   color: ${(props) => props.theme['muted-color']};
   border-radius: 5px;
   white-space: nowrap;
@@ -199,24 +218,15 @@ export const DueDateBadge = styled.div`
     color: currentColor;
   }
 
-  &.overdue,
-  &.due_soon,
-  &.completed {
-    padding: 2px 7px;
-  }
-
   &.overdue {
     color: ${(props) => props.theme['overdue-color']};
-    background-color: ${(props) => `${props.theme['overdue-color']}1f`};
   }
 
   &.due_soon {
     color: ${(props) => props.theme['due-soon-color']};
-    background-color: ${(props) => `${props.theme['due-soon-color']}1f`};
   }
 
   &.completed {
     color: ${(props) => props.theme['completed-color']};
-    background-color: ${(props) => `${props.theme['completed-color']}1f`};
   }
 `

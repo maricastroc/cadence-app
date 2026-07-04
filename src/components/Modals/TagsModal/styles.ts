@@ -25,7 +25,7 @@ export const HeaderIcon = styled.div`
   height: 38px;
   flex-shrink: 0;
   border-radius: 11px;
-  background-color: ${(props) => props.theme['accent-soft']};
+  background-color: ${(props) => props.theme['accent-fill']};
   color: ${(props) => props.theme['accent-color']};
   font-size: 0.95rem;
 `
@@ -96,12 +96,7 @@ export const TagRow = styled.div<{ $color: string }>`
   width: 100%;
   padding: 0.7rem 0.6rem;
   border-radius: 9px;
-  border-bottom: 1px solid ${(props) => props.theme['hairline-color']};
   transition: background-color 140ms ease, box-shadow 140ms ease;
-
-  &:last-of-type {
-    border-bottom: none;
-  }
 
   &:hover {
     background-color: ${(props) => hexToRgba(props.$color, 0.1)};
@@ -212,7 +207,6 @@ export const Composer = styled.div`
   margin: 0.4rem 0;
   border-radius: 11px;
   background-color: ${(props) => props.theme['field-bg']};
-  border: 1px solid ${(props) => props.theme['hairline-strong']};
 `
 
 export const ComposerInput = styled.input`
@@ -221,10 +215,10 @@ export const ComposerInput = styled.input`
   padding: 0 0.8rem;
   border-radius: 8px;
   background-color: ${(props) => props.theme['card-color']};
-  border: 1px solid ${(props) => props.theme['border-color']};
+  border: none;
   color: ${(props) => props.theme['title-color']};
-  font-size: 0.85rem;
-  transition: border-color 150ms ease, box-shadow 150ms ease;
+  font-size: 0.8125rem;
+  transition: box-shadow 150ms ease;
 
   &::placeholder {
     color: ${(props) => props.theme['muted-color']};
@@ -233,8 +227,7 @@ export const ComposerInput = styled.input`
   &:focus,
   &:focus-visible {
     outline: none;
-    border-color: ${(props) => props.theme['accent-color']};
-    box-shadow: 0 0 0 3px ${(props) => props.theme['accent-soft']};
+    box-shadow: inset 0 0 0 1.5px ${(props) => props.theme['muted-color']};
   }
 `
 
@@ -307,8 +300,8 @@ export const SearchBar = styled.div`
   padding: 0 0.8rem;
   border-radius: 9px;
   background-color: ${(props) => props.theme['field-bg']};
-  border: 1px solid ${(props) => props.theme['border-color']};
-  transition: border-color 150ms ease, box-shadow 150ms ease;
+  border: none;
+  transition: box-shadow 150ms ease;
 
   svg {
     color: ${(props) => props.theme['muted-color']};
@@ -330,7 +323,6 @@ export const SearchBar = styled.div`
   }
 
   &:focus-within {
-    border-color: ${(props) => props.theme['accent-color']};
-    box-shadow: 0 0 0 3px ${(props) => props.theme['accent-soft']};
+    box-shadow: inset 0 0 0 1.5px ${(props) => props.theme['muted-color']};
   }
 `

@@ -8,21 +8,20 @@ export const SelectStatusField = styled.button`
   height: 46px;
   align-items: center;
   justify-content: space-between;
-  padding: 0 0.9rem;
+  padding: 0 0.875rem;
   background-color: ${(props) => props.theme['field-bg']};
-  border: 1px solid ${(props) => props.theme['border-color']};
-  border-radius: 9px;
-  transition: border-color 160ms ease, box-shadow 160ms ease,
-    background-color 160ms ease;
+  border: none;
+  border-radius: 10px;
+  transition: box-shadow var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
 
   &:hover {
-    border-color: ${(props) => props.theme['hairline-strong']};
+    background-color: ${(props) => props.theme['card-hover']};
   }
 
   &.active {
-    border-color: ${(props) => props.theme['accent-color']};
-    box-shadow: 0 0 0 3px ${(props) => props.theme['accent-soft']};
-    background-color: ${(props) => props.theme['card-color']};
+    box-shadow: inset 0 0 0 1.5px ${(props) => props.theme['accent-color']};
+    background-color: ${(props) => props.theme['field-bg']};
   }
 
   p {

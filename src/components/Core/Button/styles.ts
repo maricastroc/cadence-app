@@ -66,21 +66,23 @@ export const Container = styled.button`
   &.primary {
     background-color: ${(props) => props.theme['accent-color']};
     color: ${(props) => props.theme['accent-on']};
+    box-shadow: ${(props) => props.theme['highlight-top']};
 
     &:not(:disabled):hover {
       background-color: ${(props) => props.theme['accent-hover']};
-      box-shadow: 0 0 0 4px ${(props) => props.theme['accent-soft']};
+      box-shadow: ${(props) => props.theme['highlight-top']},
+        0 0 0 3px ${(props) => props.theme['accent-soft']};
     }
   }
 
   &.secondary {
-    background-color: transparent;
-    border-color: ${(props) => props.theme['border-color']};
+    background-color: ${(props) => props.theme['card-hover']};
+    box-shadow: ${(props) => props.theme['shadow-card']};
     color: ${(props) => props.theme['text-color']};
 
     &:not(:disabled):hover {
-      background-color: ${(props) => props.theme['card-hover']};
-      border-color: ${(props) => props.theme['hairline-strong']};
+      background-color: ${(props) => props.theme['card-strong']};
+      box-shadow: ${(props) => props.theme['shadow-card-hover']};
     }
   }
 

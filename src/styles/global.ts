@@ -7,18 +7,26 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  :root {
+    /* One motion language for the whole product. */
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur-fast: 130ms;
+    --dur: 180ms;
+    --dur-slow: 260ms;
+  }
+
   input:focus-visible,
   textarea:focus-visible,
   select:focus-visible,
   a:focus-visible
   {
-    outline: 2px solid ${(props) => props.theme['accent-color']};
+    outline: 2px solid ${(props) => props.theme['muted-color']};
     outline-offset: 2px;
-    border-color: ${(props) => props.theme['accent-color']};
+    border-color: ${(props) => props.theme['muted-color']};
   }
 
   button:focus-visible {
-    outline: 2px solid ${(props) => props.theme['accent-color']};
+    outline: 2px solid ${(props) => props.theme['muted-color']};
     outline-offset: 2px;
   }
 
@@ -36,29 +44,35 @@ export const GlobalStyle = createGlobalStyle`
       'Segoe UI', sans-serif;
     font-weight: 400;
     font-size: 1rem;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.011em;
+    font-feature-settings: 'cv05' 1, 'ss01' 1, 'calt' 1;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont,
       'Segoe UI', sans-serif;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.022em;
   }
 
+  ::selection {
+    background-color: ${(props) => props.theme['accent-fill']};
+    color: ${(props) => props.theme['title-color']};
+  }
+
+  /* Quiet by default; the thumb only gains presence on hover. */
   ::-webkit-scrollbar {
-    width: 0.5rem;
-    height: 0.5rem;
+    width: 0.625rem;
+    height: 0.625rem;
   }
 
   ::-webkit-scrollbar-track {
     background-color: transparent;
-    border-radius: 10px;
   }
 
   ::-webkit-scrollbar-thumb {
     background-color: ${(props) => props.theme['scroll-color']};
     border-radius: 10px;
-    border: 2px solid transparent;
+    border: 3px solid transparent;
     background-clip: padding-box;
   }
 
@@ -68,11 +82,16 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   ::-webkit-scrollbar-corner {
-    background-color: ${(props) => props.theme['scroll-color']};
+    background-color: transparent;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: ${(props) => props.theme['scroll-color']} transparent;
   }
 
   input:-webkit-autofill,
-  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
   textarea:-webkit-autofill,
   textarea:-webkit-autofill:hover,
@@ -80,10 +99,18 @@ export const GlobalStyle = createGlobalStyle`
   select:-webkit-autofill,
   select:-webkit-autofill:hover,
   select:-webkit-autofill:focus {
-    border: 2px solid ${(props) => props.theme['border-color']};
+    border: none;
     -webkit-text-fill-color: ${(props) => props.theme['text-color']};
     -webkit-box-shadow: 0 0 0px 1000px ${(props) =>
       props.theme['field-bg']} inset;
     transition: background-color 5000s ease-in-out 0s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
   }
 `

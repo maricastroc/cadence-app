@@ -25,7 +25,7 @@ export const HeaderIcon = styled.div`
   height: 38px;
   flex-shrink: 0;
   border-radius: 11px;
-  background-color: ${(props) => props.theme['accent-soft']};
+  background-color: ${(props) => props.theme['card-hover']};
   color: ${(props) => props.theme['accent-color']};
   font-size: 0.95rem;
 `
@@ -135,6 +135,8 @@ export const FieldGroup = styled.div`
 `
 
 /** Dashed "composer" button — add subtask / add column. */
+// Dashed "add" composer — the dashed outline reads as an intentional add
+// affordance (distinct from the filled input rows), not a surface border.
 export const DashedComposerBtn = styled.button`
   display: flex;
   align-items: center;
@@ -143,13 +145,13 @@ export const DashedComposerBtn = styled.button`
   cursor: pointer;
   background: transparent;
   border: 1px dashed ${(props) => props.theme['hairline-strong']};
-  border-radius: 9px;
+  border-radius: 10px;
   padding: 0.7rem 0.85rem;
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: ${(props) => props.theme['muted-color']};
-  transition: border-color 160ms ease, color 160ms ease,
-    background-color 160ms ease;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
 
   svg {
     font-size: 0.75rem;
@@ -158,7 +160,7 @@ export const DashedComposerBtn = styled.button`
   &:hover {
     border-color: ${(props) => props.theme['accent-color']};
     color: ${(props) => props.theme['accent-text']};
-    background-color: ${(props) => props.theme['accent-soft']};
+    background-color: ${(props) => props.theme['card-hover']};
   }
 `
 
@@ -170,7 +172,6 @@ export const Footer = styled.div`
   width: 100%;
   flex-shrink: 0;
   padding: 0.9rem 1.5rem;
-  border-top: 1px solid ${(props) => props.theme['hairline-color']};
   background-color: ${(props) => props.theme['card-color']};
 `
 
@@ -195,7 +196,6 @@ export const Kbd = styled.span`
   padding: 0 5px;
   border-radius: 5px;
   background-color: ${(props) => props.theme['kbd-bg']};
-  border: 1px solid ${(props) => props.theme['hairline-color']};
   font-size: 0.66rem;
   font-weight: 600;
   color: ${(props) => props.theme['muted-color']};

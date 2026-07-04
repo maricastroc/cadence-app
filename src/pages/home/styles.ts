@@ -50,7 +50,7 @@ export const ColumnsContainer = styled.div`
   display: flex;
   overflow-x: auto;
   padding: 1rem;
-  gap: 0.85rem;
+  gap: 0.75rem;
   flex-grow: 1;
   padding-bottom: 1.5rem;
   justify-content: initial;
@@ -62,6 +62,12 @@ export const ColumnsContainer = styled.div`
 
   &:active {
     cursor: grabbing;
+  }
+
+  /* Freeze the board's horizontal pan while any modal is open (see BaseModal). */
+  body.modal-open & {
+    overflow: hidden;
+    cursor: default;
   }
 
   @media (min-width: 768px) {
@@ -84,22 +90,26 @@ export const ShowSidebarBtn = styled.button`
   align-items: center;
   justify-content: center;
   border: none;
-  border-top-right-radius: 22px;
-  border-bottom-right-radius: 22px;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
   position: fixed;
   z-index: 9999;
-  background-color: ${(props) => props.theme['primary-color']};
-  width: 56px;
-  height: 48px;
+  background-color: ${(props) => props.theme['accent-color']};
+  box-shadow: ${(props) => props.theme['shadow-md']},
+    ${(props) => props.theme['highlight-top']};
+  width: 48px;
+  height: 44px;
   top: 87%;
+  transition: background-color var(--dur) var(--ease),
+    width var(--dur) var(--ease);
 
   svg {
-    font-size: 1.5rem;
-    color: ${(props) => props.theme['title-color']};
+    font-size: 1.25rem;
+    color: ${(props) => props.theme['accent-on']};
   }
 
   &:hover {
-    background-color: ${(props) => props.theme['primary-hover']};
-    transition: 200ms;
+    background-color: ${(props) => props.theme['accent-hover']};
+    width: 52px;
   }
 `

@@ -1,86 +1,79 @@
 import { baseFontSizes } from './base'
 
 export const darkTheme = {
-  'title-color': '#F4F5F7',
+  'title-color': '#F3F3F5',
+  'text-color': '#C6C7CC',
+  'paragraph-color': '#C6C7CC',
+  'subtitle-color': '#9A9CA3',
+  'details-color': '#9A9CA3',
+  'muted-color': '#696A72',
 
-  'primary-color': '#1AA294',
-  'primary-hover': '#2BBEAF',
-
-  'border-btn-color': '#1AA294',
-
-  'tags-btn-color': '#2BBEAF',
-
-  'secondary-color': '#16161B',
-  'secondary-hover': '#1F1F26',
-
-  'tertiary-hover': '#2BBEAF',
-
-  'action-btn-color': '#E7E7EA',
-  'action-btn-hover': '#2BBEAF',
-
-  'sidebar-btn-color': '#1AA294',
-  'sidebar-btn-hover': 'rgba(26, 162, 148, 0.13)',
-
-  'error-color': '#E5484D',
-  'error-hover': '#FF6166',
-  // softened error states for a more premium, less aggressive look
-  'error-text': '#D97375',
-  'error-border': 'rgba(229, 72, 77, 0.35)',
-  'error-soft': 'rgba(229, 72, 77, 0.06)',
-
-  'button-title': '#04201C',
-
-  'text-color': '#C7CAD1',
-  'select-color': '#16161B',
-
-  'paragraph-color': '#C7CAD1',
-  'details-color': '#8A8E98',
-  'subtitle-color': '#878B95',
-  'border-color': 'rgba(255, 255, 255, 0.08)',
-  'cards-color': '#16161B',
-  'bg-color': '#0A0A0C',
-  'scroll-color': '#2A2A30',
-
-  'light-bg-color': '#16161B',
-
-  'completed-color': '#2FB48A',
-  'overdue-color': '#C95C57',
-  'due-soon-color': '#E0A53B',
-
-  // --- redesign surfaces & accents (C2 / teal) ---
   'canvas-color': '#0A0A0C',
-  'sidebar-color': '#0D0D11',
-  'panel-color': '#0D0D11',
-  'card-color': '#17181D',
-  // hover-fill for menu items / buttons / rows on an elevated surface
-  'card-hover': '#1E1F26',
-  // surface a card rises to on hover/drag (brightens, as elevation = lighter)
-  'card-lift': '#1E1F26',
-  'field-bg': '#131317',
+  'sidebar-color': '#0C0C0E',
+  'panel-color': '#15161A',
+  'card-color': '#1F2026',
+  'card-hover': '#2C2D36',
+  'card-lift': '#2C2D36',
+  'card-strong': '#35363F',
+  'field-bg': '#17181D',
+  'bg-color': '#0A0A0C',
+  'cards-color': '#1F2026',
+  'secondary-color': '#15161A',
+  'secondary-hover': '#1F2026',
+  'select-color': '#15161A',
+  'light-bg-color': '#15161A',
 
-  // --- layered elevation system (kept strong/black for the dark canvas) ---
-  'shadow-xs': '0 1px 2px rgba(0, 0, 0, 0.30)',
-  'shadow-sm': '0 6px 18px rgba(0, 0, 0, 0.34)',
-  'shadow-md': '0 12px 28px rgba(0, 0, 0, 0.45)',
-  'shadow-lg': '0 30px 90px rgba(0, 0, 0, 0.55)',
-  // back-compat alias (kept equal to shadow-sm)
-  'card-shadow': '0 6px 18px rgba(0, 0, 0, 0.34)',
-
-  // scrim behind modals / loading
-  'overlay-color': 'rgba(6, 6, 8, 0.6)',
-  'muted-color': '#6A6D77',
+  'border-color': 'rgba(255, 255, 255, 0.09)',
   'hairline-color': 'rgba(255, 255, 255, 0.06)',
   'hairline-strong': 'rgba(255, 255, 255, 0.11)',
+  'scroll-color': 'rgba(255, 255, 255, 0.12)',
+  'kbd-bg': 'rgba(255, 255, 255, 0.07)',
+
+  'primary-color': '#1AA294',
+  'primary-hover': '#22B4A5',
   'accent-color': '#1AA294',
-  'accent-hover': '#2BBEAF',
-  'accent-soft': 'rgba(26, 162, 148, 0.13)',
-  'accent-text': '#74D6C7',
-  'accent-on': '#04201C',
-  'accent-glow': 'rgba(26, 162, 148, 0.26)',
-  // exclusive secondary signature accent (rose) — used sparingly for identity
+  'accent-hover': '#22B4A5',
+  'accent-soft': 'rgba(26, 162, 148, 0.12)',
+  'accent-fill': '#1F2026',
+  'accent-text': '#5FDDCE',
+  'accent-on': '#04211D',
+  'accent-glow': 'rgba(26, 162, 148, 0.24)',
+  'border-btn-color': '#1AA294',
+  'tags-btn-color': '#22B4A5',
+  'sidebar-btn-color': '#1AA294',
+  'sidebar-btn-hover': 'rgba(26, 162, 148, 0.12)',
+  'action-btn-color': '#E7E7EA',
+  'action-btn-hover': '#22B4A5',
+  'tertiary-hover': '#22B4A5',
+  'button-title': '#04211D',
   'accent-2': '#E8638F',
   'accent-2-soft': 'rgba(232, 99, 143, 0.14)',
-  'kbd-bg': 'rgba(255, 255, 255, 0.07)',
+
+  'completed-color': '#33BB8C',
+  'overdue-color': '#D96A62',
+  'due-soon-color': '#D99B3F',
+  'error-color': '#E5484D',
+  'error-hover': '#F0575B',
+  'error-text': '#E07C7E',
+  'error-border': 'rgba(229, 72, 77, 0.32)',
+  'error-soft': 'rgba(229, 72, 77, 0.07)',
+
+  'highlight-top': 'inset 0 1px 0 rgba(255, 255, 255, 0.06)',
+  'shadow-xs': '0 1px 2px rgba(0, 0, 0, 0.35)',
+  'shadow-sm': '0 2px 8px -2px rgba(0, 0, 0, 0.42)',
+  'shadow-md': '0 10px 30px -8px rgba(0, 0, 0, 0.55)',
+  'shadow-lg': '0 28px 70px -16px rgba(0, 0, 0, 0.66)',
+
+  'shadow-card':
+    'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 1px 2px rgba(0, 0, 0, 0.35)',
+  'shadow-card-hover':
+    'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 10px 24px -8px rgba(0, 0, 0, 0.55)',
+  'shadow-pop':
+    'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 12px 34px -10px rgba(0, 0, 0, 0.6)',
+  'card-shadow':
+    'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 1px 2px rgba(0, 0, 0, 0.35)',
+
+  'overlay-color': 'rgba(6, 6, 9, 0.66)',
 
   ...baseFontSizes,
 }
