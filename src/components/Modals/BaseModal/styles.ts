@@ -14,7 +14,17 @@ export const ModalOverlay = styled(RadixOverlay)`
   inset: 0;
   z-index: 9990;
   background-color: ${(props) => props.theme['overlay-color']};
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px) saturate(120%);
+  animation: overlayIn 0.2s var(--ease);
+
+  @keyframes overlayIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 `
 
 export const HeaderContent = styled.div<{ padding?: string }>`
@@ -78,17 +88,17 @@ export const ModalContent = styled(RadixContent)<{
   height: ${(props) => props.height || 'auto'};
   max-height: 90vh;
   background-color: ${(props) => props.theme['card-color']};
-  border: 1px solid ${(props) => props.theme['hairline-color']};
   overflow-y: ${(props) => props.overflow || 'auto'};
   position: fixed;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   width: clamp(300px, 90vw, 33rem);
-  border-radius: 18px;
-  box-shadow: ${(props) => props.theme['shadow-lg']};
+  border-radius: 16px;
+  box-shadow: ${(props) => props.theme['shadow-lg']},
+    ${(props) => props.theme['highlight-top']};
   z-index: 9998;
-  animation: scaleIn 0.22s ease-out forwards;
+  animation: scaleIn 0.22s var(--ease) forwards;
 
   &:focus {
     box-shadow: ${(props) => props.theme['shadow-lg']};

@@ -49,6 +49,13 @@ export function useDragScroll(
   const handleContainerMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement
 
+    // Don't pan the board while a modal is open (belt-and-suspenders alongside
+    // the CSS overflow lock — drag sets scrollLeft programmatically, which an
+    // overflow:hidden container would still honour).
+    if (document.body.classList.contains('modal-open')) {
+      return
+    }
+
     if (
       target.closest('.task-card') ||
       target.closest('.modal') ||

@@ -20,21 +20,22 @@ export const LoginCard = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 1.75rem;
   width: 90%;
-  border-radius: 15px;
+  border-radius: 16px;
   padding-top: 2.5rem;
   padding-bottom: 2.5rem;
   margin-bottom: 1.5rem;
-  max-width: 31.25rem;
+  max-width: 30rem;
   flex-direction: column;
-  background-color: ${(props) => props.theme['cards-color']};
+  background-color: ${(props) => props.theme['card-color']};
+  box-shadow: ${(props) => props.theme['highlight-top']};
 
   @media (min-width: 480px) {
-    padding: 2.3rem;
+    padding: 2.5rem;
     margin-bottom: 2.5rem;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: ${(props) => props.theme['cards-color']};
+    box-shadow: ${(props) => props.theme['shadow-lg']},
+      ${(props) => props.theme['highlight-top']};
   }
 `
 
@@ -51,9 +52,9 @@ export const LogoWrapper = styled.div`
   }
 
   .wordmark {
-    font-weight: 700;
-    font-size: 2rem;
-    letter-spacing: -1px;
+    font-weight: 600;
+    font-size: 1.875rem;
+    letter-spacing: -0.03em;
     line-height: 1;
     color: ${(props) => props.theme['title-color']};
   }
@@ -148,14 +149,15 @@ export const InputContainer = styled.div`
 
 export const InputField = styled.input`
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 0.75rem 1rem;
   padding-left: 3rem;
   margin-top: 0.2rem;
-  background-color: transparent;
-  border: 2px solid ${(props) => props.theme['border-color']};
-  border-radius: 5px;
+  background-color: ${(props) => props.theme['field-bg']};
+  border: none;
+  border-radius: 10px;
   color: ${(props) => props.theme['text-color']};
   font-size: ${(props) => props.theme['body-l']};
+  transition: box-shadow var(--dur) var(--ease);
 
   &:-webkit-autofill {
     background-color: transparent !important;
@@ -173,20 +175,17 @@ export const InputField = styled.input`
 
   &:focus,
   &:focus-visible {
-    background-color: transparent;
     outline: none;
-    border-color: ${(props) => props.theme['accent-color']};
-    box-shadow: 0 0 0 3px ${(props) => props.theme['accent-soft']};
+    box-shadow: inset 0 0 0 1.5px ${(props) => props.theme['muted-color']};
   }
 
   &:-webkit-autofill:focus {
-    border: 2px solid ${(props) => props.theme['accent-color']};
-    box-shadow: 0 0 0px 1000px #000 inset,
-      0 0 0 3px ${(props) => props.theme['accent-soft']};
+    box-shadow: 0 0 0px 1000px ${(props) => props.theme['field-bg']} inset,
+      inset 0 0 0 1.5px ${(props) => props.theme['muted-color']};
   }
 
   &.error {
-    border: solid 2px ${(props) => props.theme['error-border']};
+    box-shadow: inset 0 0 0 1.5px ${(props) => props.theme['error-border']};
   }
 `
 

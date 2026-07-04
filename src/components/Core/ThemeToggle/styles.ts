@@ -2,18 +2,18 @@ import styled from 'styled-components'
 import { Root as RadixRoot, Thumb as RadixThumb } from '@radix-ui/react-switch'
 
 export const ThemeSwitcherContainer = styled.div`
-  background-color: ${(props) => props.theme['panel-color']};
-  border: 1px solid ${(props) => props.theme['hairline-color']};
-  border-radius: 9px;
+  background-color: ${(props) => props.theme['card-color']};
+  box-shadow: ${(props) => props.theme['shadow-card']};
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.6rem;
-  gap: 1rem;
+  padding: 0.5rem 0.625rem;
+  gap: 0.875rem;
 
   svg {
     color: ${(props) => props.theme['muted-color']};
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 `
 

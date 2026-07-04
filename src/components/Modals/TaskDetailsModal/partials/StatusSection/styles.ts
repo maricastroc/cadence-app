@@ -13,9 +13,7 @@ export const StatusSelectorContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background-color: ${(props) => props.theme['card-color']};
-  border: 1px solid ${(props) => props.theme['hairline-strong']};
+  background-color: ${(props) => props.theme['field-bg']};
   border-radius: 10px;
-  box-shadow: ${(props) => props.theme['card-shadow']};
   padding: 0.3rem;
 `

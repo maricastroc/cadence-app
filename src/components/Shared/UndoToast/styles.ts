@@ -6,9 +6,8 @@ export const Container = styled.div`
   gap: 0.55rem;
   padding: 0.7rem 0.8rem;
   border-radius: 10px;
-  background-color: ${(props) => props.theme['panel-color']};
-  border: 1px solid ${(props) => props.theme['hairline-strong']};
-  box-shadow: ${(props) => props.theme['shadow-lg']};
+  background-color: ${(props) => props.theme['card-color']};
+  box-shadow: ${(props) => props.theme['shadow-pop']};
 
   > svg {
     flex-shrink: 0;
@@ -31,7 +30,7 @@ export const UndoButton = styled.button`
   padding: 0.32rem 0.6rem;
   border: none;
   border-radius: 7px;
-  background-color: ${(props) => props.theme['accent-soft']};
+  background-color: ${(props) => props.theme['accent-fill']};
   color: ${(props) => props.theme['accent-text']};
   font-size: 0.8rem;
   font-weight: 600;
@@ -48,7 +47,7 @@ export const UndoButton = styled.button`
   }
 
   &:focus-visible {
-    outline: 2px solid ${(props) => props.theme['accent-color']};
+    outline: 2px solid ${(props) => props.theme['muted-color']};
     outline-offset: 2px;
   }
 `

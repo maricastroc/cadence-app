@@ -1,44 +1,41 @@
 import styled from 'styled-components'
 
+// Borderless input: a recessed well defined by a fill darker than its container
+// (field-bg), never an outline. Focus is an accent ring (box-shadow), error is
+// an inset ring — no borders anywhere.
 export const Input = styled.input`
   pointer-events: initial;
   opacity: 1;
   width: 100%;
-  height: 46px;
+  height: 44px;
   background-color: ${(props) => props.theme['field-bg']};
-  border: 1px solid ${(props) => props.theme['border-color']};
-  padding: 0 0.9rem;
+  border: none;
+  padding: 0 0.875rem;
   color: ${(props) => props.theme['title-color']};
-  font-size: 0.85rem;
-  border-radius: 9px;
-  transition: border-color 160ms ease, box-shadow 160ms ease,
-    background-color 160ms ease;
+  font-size: 0.8125rem;
+  border-radius: 10px;
+  transition: box-shadow var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
 
   &::placeholder {
     color: ${(props) => props.theme['muted-color']};
   }
 
-  &:hover {
-    border-color: ${(props) => props.theme['hairline-strong']};
-  }
-
   &:focus,
   &:focus-visible {
     outline: none;
-    border-color: ${(props) => props.theme['accent-color']};
-    box-shadow: 0 0 0 3px ${(props) => props.theme['accent-soft']};
-    background-color: ${(props) => props.theme['card-color']};
+    box-shadow: inset 0 0 0 1.5px ${(props) => props.theme['muted-color']};
   }
 
   &.error {
-    border-color: ${(props) => props.theme['error-border']};
     background-color: ${(props) => props.theme['error-soft']};
+    box-shadow: inset 0 0 0 1.5px ${(props) => props.theme['error-border']};
   }
 
   &.error:focus,
   &.error:focus-visible {
-    border-color: ${(props) => props.theme['error-border']};
-    box-shadow: 0 0 0 3px ${(props) => props.theme['error-soft']};
+    box-shadow: inset 0 0 0 1.5px ${(props) => props.theme['error-border']},
+      0 0 0 3px ${(props) => props.theme['error-soft']};
   }
 
   &.transparent {

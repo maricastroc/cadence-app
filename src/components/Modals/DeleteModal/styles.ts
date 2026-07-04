@@ -39,7 +39,6 @@ export const TargetCard = styled.div`
   margin-top: 1.25rem;
   padding: 0.7rem 0.85rem;
   border-radius: 10px;
-  border: 1px solid ${(props) => props.theme['hairline-color']};
   background-color: ${(props) => props.theme['field-bg']};
 
   span {

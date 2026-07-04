@@ -162,6 +162,7 @@ export function TaskDetailsModal({
           <Header
             enableDarkMode={enableDarkMode}
             taskName={task.name}
+            subtitle={activeBoard?.name}
             isActionsModalOpen={isActionsModalOpen}
             onToggleEditModal={(value) => setIsEditModalOpen(value)}
             onToggleDeleteModal={(value) => setIsDeleteModalOpen(value)}

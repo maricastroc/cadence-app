@@ -3,7 +3,6 @@ import styled from 'styled-components'
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  border-right: solid 1px ${(props) => props.theme['hairline-color']};
   min-width: 220px;
   background-color: ${(props) => props.theme['sidebar-color']};
   position: fixed;
@@ -43,15 +42,16 @@ export const Wrapper = styled.div`
 export const Brand = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.7rem;
-  padding: 0.25rem 1rem 1.4rem;
+  gap: 0.625rem;
+  padding: 0.25rem 1rem 1.5rem;
 
   .logo-mark {
     display: flex;
-    width: 30px;
-    height: 30px;
-    border-radius: 9px;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
     overflow: hidden;
+    box-shadow: ${(props) => props.theme['highlight-top']};
 
     img {
       width: 100%;
@@ -61,9 +61,9 @@ export const Brand = styled.div`
   }
 
   span {
-    font-size: 1.05rem;
-    font-weight: 700;
-    letter-spacing: -0.3px;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
     color: ${(props) => props.theme['title-color']};
   }
 `
@@ -72,10 +72,10 @@ export const SectionLabel = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1.15rem 0.5rem;
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.7px;
+  padding: 0 1.1875rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
   color: ${(props) => props.theme['muted-color']};
   text-transform: uppercase;
 `
@@ -95,10 +95,9 @@ export const CreateDivider = styled.div`
 export const OptionsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.375rem;
   padding: 0.75rem 0.75rem 0;
   margin-top: auto;
-  border-top: 1px solid ${(props) => props.theme['hairline-color']};
 `
 
 export const HideButton = styled.button`
@@ -106,28 +105,29 @@ export const HideButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 0.6rem;
-  padding: 0.6rem 0.65rem;
+  gap: 0.625rem;
+  padding: 0.5rem 0.625rem;
   background-color: transparent;
   border: none;
   border-radius: 8px;
   width: 100%;
   color: ${(props) => props.theme['muted-color']};
-  transition: background-color 160ms, color 160ms;
+  transition: background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
 
   p {
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     font-weight: 500;
     color: inherit;
   }
 
   svg {
     color: inherit;
-    font-size: 1.05rem;
+    font-size: 1rem;
   }
 
   &:hover {
-    background-color: ${(props) => props.theme['hairline-color']};
+    background-color: ${(props) => props.theme['card-hover']};
     color: ${(props) => props.theme['text-color']};
   }
 `
