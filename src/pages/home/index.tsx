@@ -6,8 +6,9 @@ import {
   DndContext,
   DragOverlay,
   KeyboardSensor,
-  PointerSensor,
+  MouseSensor,
   ScreenReaderInstructions,
+  TouchSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core'
@@ -108,8 +109,19 @@ export default function Home() {
     onDragCancel,
   } = useDragAndDrop(boardColumns, setBoardColumns)
 
+  // Split pointer input by device so touch feels like Trello. A mouse picks a
+  // card up after an 8px move — instant and precise. Touch instead needs a
+  // ~200ms press-and-hold (`delay`) before the card lifts, so a quick swipe
+  // still scrolls the column/board and only a deliberate hold starts a drag. A
+  // single PointerSensor can't express this: its one activation constraint
+  // applies to both inputs, so the `distance` rule let the browser's native
+  // scroll win the gesture on touch and the card never lifted. `tolerance: 8`
+  // lets the finger jitter during the hold without cancelling the pickup.
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 200, tolerance: 8 },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     }),
