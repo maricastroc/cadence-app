@@ -14,6 +14,14 @@ export const TaskCardContainer = styled.div`
   border-radius: 10px;
   background-color: ${(props) => props.theme['card-color']};
 
+  /* Touch drag is a press-and-hold (see the TouchSensor delay). Suppress iOS's
+     long-press callout and text selection so holding a card picks it up cleanly
+     instead of popping the selection magnifier over the drag. */
+  -webkit-touch-callout: none;
+  user-select: none;
+
+  border: 1px solid ${(props) => props.theme['hairline-color']};
+  box-shadow: ${(props) => props.theme['shadow-xs']};
   box-shadow: ${(props) => props.theme['shadow-card']};
   width: 100%;
   transition: background-color var(--dur) var(--ease),
