@@ -15,6 +15,18 @@ export const ThemeSwitcherContainer = styled.div`
     color: ${(props) => props.theme['muted-color']};
     font-size: 0.9rem;
   }
+
+  /* Only shown inside the mobile board switcher (the sidebar is hidden on
+     phones) — size it up so it's comfortable to tap and reads as intentional. */
+  @media (max-width: 767px) {
+    padding: 0.6rem 0.9rem;
+    gap: 1rem;
+    border-radius: 12px;
+
+    svg {
+      font-size: 1.15rem;
+    }
+  }
 `
 
 export const SwitchRoot = styled(RadixRoot)`
@@ -35,6 +47,11 @@ export const SwitchRoot = styled(RadixRoot)`
   &:hover {
     background-color: ${(props) => props.theme['accent-hover']};
   }
+
+  @media (max-width: 767px) {
+    width: 52px;
+    height: 30px;
+  }
 `
 
 export const SwitchThumb = styled(RadixThumb)`
@@ -49,5 +66,15 @@ export const SwitchThumb = styled(RadixThumb)`
 
   &[data-state='checked'] {
     transform: translateX(21px);
+  }
+
+  @media (max-width: 767px) {
+    width: 24px;
+    height: 24px;
+    transform: translateX(3px);
+
+    &[data-state='checked'] {
+      transform: translateX(25px);
+    }
   }
 `

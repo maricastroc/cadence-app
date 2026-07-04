@@ -206,10 +206,14 @@ export const CreateBoardButton = styled.button`
       width: 38px;
       height: 38px;
       border-radius: 11px;
+      /* accent-fill collapses to the modal's card colour in dark mode, so the
+         box vanished — a solid accent reads as an "add" avatar in both themes. */
+      background-color: ${(props) => props.theme['accent-color']};
     }
 
     svg {
       font-size: 0.95rem;
+      color: ${(props) => props.theme['accent-on']};
     }
 
     p {
