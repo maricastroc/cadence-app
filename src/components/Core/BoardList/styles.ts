@@ -112,10 +112,6 @@ export const BoardButton = styled.button`
     outline-offset: -2px;
   }
 `
-
-// The "Create board" affordance. Placement differs per surface (pinned in the
-// sidebar, inline in the mobile sheet), but the visual is shared here so the two
-// never drift apart.
 export const CreateBoardButton = styled.button`
   cursor: pointer;
   display: flex;

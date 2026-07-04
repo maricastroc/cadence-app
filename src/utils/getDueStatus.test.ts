@@ -1,8 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { getDueStatus, getDueLabel } from './getDueStatus'
 
-// The timezone is pinned to UTC in vitest.setup.ts, so the system time below
-// represents 2026-06-29 00:00 UTC as "today" after the function zeroes the hours.
 describe('getDueStatus', () => {
   beforeEach(() => {
     vi.useFakeTimers()
@@ -45,7 +43,6 @@ describe('getDueStatus', () => {
 
     getDueStatus(original, false)
 
-    // The function zeroes the hours internally; the caller's Date must be intact.
     expect(original.getTime()).toBe(before)
     expect(original.getUTCHours()).toBe(15)
   })

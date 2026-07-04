@@ -134,9 +134,6 @@ export const FieldGroup = styled.div`
   }
 `
 
-/** Dashed "composer" button — add subtask / add column. */
-// Dashed "add" composer — the dashed outline reads as an intentional add
-// affordance (distinct from the filled input rows), not a surface border.
 export const DashedComposerBtn = styled.button`
   display: flex;
   align-items: center;

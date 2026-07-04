@@ -85,8 +85,6 @@ export default function Login() {
         redirect: false,
       })
 
-      // session now lives in the httpOnly cookie — refresh /user so the app
-      // picks up the authenticated state before navigating
       await revalidateAuth()
       toast.success('Welcome to Cadence!')
       router.push('/')
@@ -102,8 +100,6 @@ export default function Login() {
     setApiError(null)
 
     try {
-      // No credentials — the backend signs us into the shared demo account and
-      // reseeds its sample workspace so we always land on a clean, full board.
       await api.post('demo-login')
 
       await revalidateAuth()
@@ -116,9 +112,6 @@ export default function Login() {
     }
   }
 
-  // While the session probe is in flight (e.g. a cold backend where /user is
-  // still pending) show the loader, never a bare null — otherwise a slow probe
-  // paints a blank white screen instead of resolving into the form.
   if (isCheckingAuth) return <LoadingComponent />
 
   return (

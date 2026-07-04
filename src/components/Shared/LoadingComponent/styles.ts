@@ -15,7 +15,6 @@ export const Loader = styled.div`
   z-index: 9999;
 `
 
-// Circular spinner: a faint accent ring with a bright accent arc on top.
 export const Spinner = styled.div`
   width: 40px;
   height: 40px;

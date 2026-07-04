@@ -63,8 +63,6 @@ export const CardContent = memo(function CardContent({
   const dueLabel = task?.due_date ? getDueLabel(task.due_date, isCompleted) : ''
 
   async function handleToggleCompletion(event: React.MouseEvent) {
-    // The card is both a drag handle and the modal trigger, so stop the toggle
-    // click from starting a drag or opening the details modal.
     event.preventDefault()
     event.stopPropagation()
     if (isToggling) return
@@ -166,10 +164,6 @@ export const TaskCard = memo(function TaskCard({
     handleEnableScrollFeature(!isTaskDetailsModalOpen)
   }, [isTaskDetailsModalOpen])
 
-  // Tasks reorder by pointer (drag anywhere on the card). We keep only the
-  // pointer activator and not the keyboard one, so that for keyboard users
-  // Enter/Space opens the task instead of starting a drag. (Columns carry the
-  // keyboard-drag affordance on their dedicated handle.)
   const { listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({
       id: taskSortableId(task.id),
@@ -208,9 +202,6 @@ export const TaskCard = memo(function TaskCard({
         onClick={openDetails}
         {...listeners}
         onKeyDown={(event) => {
-          // Keep keyboard focus opening the task: ignore keys bubbling up from
-          // the completion toggle, and override dnd-kit's own key handler so
-          // Enter/Space opens the details instead of starting a drag.
           if (event.target !== event.currentTarget) return
           if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault()

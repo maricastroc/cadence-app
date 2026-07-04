@@ -77,10 +77,6 @@ export const BoardNameRow = styled.div`
     }
   }
 `
-
-// Board metadata reads as quiet inline chips — the same hairline-fill language
-// as the tag chips on cards, so the whole product rhymes. Only "% done" carries
-// a dot of the accent, because it's the one number worth a glance.
 export const MetricStrip = styled.div`
   display: flex;
   align-items: center;

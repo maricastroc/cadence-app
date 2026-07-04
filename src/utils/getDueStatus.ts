@@ -1,12 +1,9 @@
-// Always clone: `new Date(value)` copies a Date argument (and parses a string),
-// so the setHours() below never mutates the caller's original Date.
 const startOfDay = (value: string | Date): Date => {
   const date = new Date(value)
   date.setHours(0, 0, 0, 0)
   return date
 }
 
-// Whole-day distance from today; negative when the date is already in the past.
 const daysUntil = (date: string | Date): number => {
   const diff = startOfDay(date).getTime() - startOfDay(new Date()).getTime()
   return Math.ceil(diff / (1000 * 60 * 60 * 24))

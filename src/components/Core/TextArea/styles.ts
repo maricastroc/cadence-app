@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 
-// Borderless textarea — same recessed-well language as Input.
 export const TextArea = styled.textarea`
   background-color: ${(props) => props.theme['field-bg']};
   border: none;

@@ -36,8 +36,6 @@ export function Header({
   const metrics = useMemo(() => {
     const columns = activeBoard?.columns || []
     const tasks = columns.flatMap((c) => c.tasks || [])
-    // "% done" reflects completed tasks (the is_completed marker), matching how
-    // completion works on the cards — not subtask progress.
     const completedTasks = tasks.filter((t) => t.is_completed).length
     const progress = tasks.length
       ? Math.round((completedTasks / tasks.length) * 100)

@@ -9,8 +9,6 @@ interface UndoToastProps {
   onUndo: () => void
 }
 
-// A transient "X deleted — Undo" toast. The actual deletion is deferred (see
-// useUndoableDelete); clicking Undo before it fires cancels the request.
 export function UndoToast({ toastInstance, message, onUndo }: UndoToastProps) {
   return (
     <Container role="status" aria-live="polite">

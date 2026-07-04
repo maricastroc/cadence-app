@@ -28,8 +28,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [enableDarkMode, setEnableDarkMode] = useState(true)
 
-  // Start from the default on the server and first client render (avoids a
-  // hydration mismatch), then restore the saved preference once mounted.
   useEffect(() => {
     setEnableDarkMode(getStorageTheme() === 'DARK_THEME')
   }, [])

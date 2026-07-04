@@ -58,9 +58,6 @@ export const BoardColumn = memo(function BoardColumn({
 
   const isEmpty = column?.tasks?.length === 0
 
-  // The column is both a sortable item (horizontal reorder) and the droppable
-  // target for tasks — one stable id (`column-<id>`) serves both, so dropping
-  // into an empty column and reordering columns can't desync from positions.
   const {
     attributes,
     listeners,
@@ -181,10 +178,6 @@ export const BoardColumn = memo(function BoardColumn({
   )
 })
 
-// Rendered inside the DndContext's <DragOverlay> while a column is being
-// dragged. Purely presentational — no sortable hooks (which would re-register
-// the column/task ids already mounted in the board) — so it just mirrors the
-// column's chrome and cards as a ghost that follows the cursor.
 export function ColumnOverlay({ column }: { column: BoardColumnProps }) {
   const isEmpty = column.tasks.length === 0
 

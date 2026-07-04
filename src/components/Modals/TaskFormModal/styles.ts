@@ -1,10 +1,8 @@
 import styled from 'styled-components'
 import { DragHandle } from '@/components/Core/DragHandle'
 
-// Dashed "Add subtask" composer reuses the shared sheet primitive.
 export { DashedComposerBtn as AddSubtaskBtn } from '../Sheet/styles'
 
-// A subtask row in the edit/create form: grip handle + the field group.
 export const SubtaskRow = styled.div`
   display: flex;
   align-items: flex-start;
@@ -18,7 +16,6 @@ export const SubtaskRow = styled.div`
   }
 `
 
-// The grip spans the input height so it lines up with the field, not the error.
 export const SubtaskDragHandle = styled(DragHandle)`
   height: 44px;
 `
@@ -37,8 +34,6 @@ export const SubtasksWrapper = styled.div`
   margin-bottom: 0.7rem;
 `
 
-// Fills the otherwise-empty subtasks area so the section doesn't read as a void
-// before the first subtask is added.
 export const SubtasksEmpty = styled.div`
   display: flex;
   flex-direction: column;

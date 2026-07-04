@@ -12,14 +12,10 @@ const { deleteWithUndo } = vi.hoisted(() => ({
   deleteWithUndo: vi.fn(),
 }))
 
-// The deferred-delete orchestration lives in the hook; here we only assert the
-// modal hands the right request over and closes.
 vi.mock('@/hooks/useUndoableDelete', () => ({
   useUndoableDelete: () => ({ deleteWithUndo }),
 }))
 
-// The real context throws without a provider and pulls in SWR/useAuthUser, so
-// we stub it with a controllable active board.
 vi.mock('@/contexts/BoardsContext', () => ({
   useBoardsContext: () => ({
     activeBoard: { id: 'board-1', name: 'Marketing', columns: [] },
@@ -28,8 +24,6 @@ vi.mock('@/contexts/BoardsContext', () => ({
   }),
 }))
 
-// BaseModal renders through Radix's Dialog.Portal, which needs a Dialog.Root
-// ancestor; `open` forces the portal content to mount.
 const renderModal = (ui: ReactElement) =>
   render(
     <ThemeProvider theme={darkTheme}>

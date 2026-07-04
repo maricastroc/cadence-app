@@ -1,9 +1,6 @@
 import styled from 'styled-components'
 import { menuSurface } from '@/components/Core/Menu/styles'
 
-// A column reads as a container through a lighter fill + a top bevel of light.
-// The grip and menu stay visible but quiet (muted) at rest — so they're
-// discoverable and reachable on touch — and brighten on direct hover.
 export const Panel = styled.div`
   display: flex;
   flex-direction: column;

@@ -24,7 +24,6 @@ describe('getBoardColor', () => {
   })
 
   it('maps a known name to its expected color', () => {
-    // 'A' -> charCode 65, 65 % 8 = 1 -> PALETTE[1]
     expect(getBoardColor('A')).toBe('#3B82F6')
   })
 })

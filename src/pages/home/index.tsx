@@ -109,14 +109,6 @@ export default function Home() {
     onDragCancel,
   } = useDragAndDrop(boardColumns, setBoardColumns)
 
-  // Split pointer input by device so touch feels like Trello. A mouse picks a
-  // card up after an 8px move — instant and precise. Touch instead needs a
-  // ~200ms press-and-hold (`delay`) before the card lifts, so a quick swipe
-  // still scrolls the column/board and only a deliberate hold starts a drag. A
-  // single PointerSensor can't express this: its one activation constraint
-  // applies to both inputs, so the `distance` rule let the browser's native
-  // scroll win the gesture on touch and the card never lifted. `tolerance: 8`
-  // lets the finger jitter during the hold without cancelling the pickup.
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
     useSensor(TouchSensor, {
@@ -128,10 +120,6 @@ export default function Home() {
   )
 
   useEffect(() => {
-    // Don't overwrite the board while a drag is in flight: swapping the columns
-    // array mid-drag makes dnd-kit cancel the gesture and can strand the drag
-    // overlay. A refetch landing during a drag is dropped here — the optimistic
-    // state already reflects it, and the next idle change re-syncs.
     if (activeTask || activeColumn) return
     setBoardColumns(activeBoard?.columns)
   }, [activeBoard])
@@ -144,9 +132,6 @@ export default function Home() {
 
   const isFiltering = isBoardFiltered({ search, tags: filterTags, sortBy })
 
-  // Boards exist but none has resolved yet (initial fetch or the auto-activation
-  // round-trip): keep the loader up instead of flashing the "no board selected"
-  // / empty-board states between requests.
   const isResolvingBoard =
     !activeBoard && (isLoading || (boards?.length ?? 0) > 0)
 
@@ -166,8 +151,6 @@ export default function Home() {
     setFilterTags([])
   }
 
-  // Show the loader (not a bare null) while the session probe resolves so a
-  // cold/slow backend never paints a blank screen before the redirect settles.
   if (isCheckingAuth) return <LoadingComponent />
 
   return (
@@ -226,9 +209,6 @@ export default function Home() {
                         columns={displayColumns}
                         isLoading={isLoading}
                         isApiProcessing={isApiProcessing}
-                        // Persisting a move no longer disables dragging — the
-                        // write runs in a background queue — so a slow backend
-                        // can't freeze the board between drags.
                         dragDisabled={isLoading || isFiltering}
                         onOpenModal={(value) => setIsColumnFormModalOpen(value)}
                       />

@@ -6,8 +6,6 @@ import { ThemeProvider } from 'styled-components'
 import { darkTheme } from '@/styles/themes/dark'
 import Login from './index.page'
 
-// Shared spies, created via vi.hoisted so the (hoisted) vi.mock factories below
-// can reference them.
 const { pushMock, postMock, toastSuccess, toastError, revalidateAuthMock } =
   vi.hoisted(() => ({
     pushMock: vi.fn(),
@@ -47,8 +45,6 @@ vi.mock('@/contexts/ThemeContext', () => ({
   useTheme: () => ({ enableDarkMode: true, toggleTheme: vi.fn() }),
 }))
 
-// Auth now lives in an httpOnly cookie; the session is resolved through
-// useAuthUser, so we stub it to control the auth state in the tests.
 vi.mock('@/hooks/useAuthUser', () => ({
   useAuthUser: () => ({
     user: null,
@@ -106,8 +102,6 @@ describe('Login page', () => {
       })
     })
 
-    // session is established via the cookie; the app refreshes /user instead of
-    // reading a token from localStorage
     expect(revalidateAuthMock).toHaveBeenCalled()
     expect(toastSuccess).toHaveBeenCalledWith('Welcome to Cadence!')
     expect(pushMock).toHaveBeenCalledWith('/')

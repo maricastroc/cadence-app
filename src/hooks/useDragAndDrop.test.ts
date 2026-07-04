@@ -8,9 +8,6 @@ import { columnDroppableId } from '@/pages/home/partials/BoardColumn'
 import { BoardColumnProps } from '@/@types/board-column'
 import { TaskProps } from '@/@types/task'
 
-// The hook talks to three collaborators; mock them so the suite exercises the
-// drag math + optimistic-update logic in isolation, and so we can assert on the
-// persistence calls (move vs reorder) and on the rollback path.
 const { mockPatch, mockActiveBoardMutate, mockHandleApiError } = vi.hoisted(
   () => ({
     mockPatch: vi.fn(),
@@ -36,13 +33,11 @@ const makeTask = (id: number): TaskProps => ({
   subtasks: [],
 })
 
-// Two columns: "Todo" with tasks 1 & 2, "Doing" with task 3.
 const baseColumns = (): BoardColumnProps[] => [
   { id: 1, name: 'Todo', tasks: [makeTask(1), makeTask(2)] },
   { id: 2, name: 'Doing', tasks: [makeTask(3)] },
 ]
 
-// Collapse columns to `{ id, tasks: [...ids] }` so order assertions read clearly.
 const shape = (columns?: BoardColumnProps[]) =>
   columns?.map((col) => ({ id: col.id, tasks: col.tasks.map((t) => t.id) }))
 
@@ -67,7 +62,6 @@ const startColumn = (column: BoardColumnProps) =>
     }),
   } as unknown as DragStartEvent)
 
-// `over` is null when the pointer is released over no droppable.
 const dragEvent = (
   activeId: string,
   activeData: DragData,
@@ -80,8 +74,6 @@ const dragEvent = (
 const overTask = (id: number) => taskSortableId(id)
 const overColumn = (id: number) => columnDroppableId(id)
 
-// Drive the hook through a real useState so optimistic moves (and rollbacks)
-// actually update state and re-render — mirroring how the board uses it.
 function setup(initial = baseColumns()) {
   return renderHook(() => {
     const [columns, setColumns] = useState<BoardColumnProps[] | undefined>(
@@ -150,7 +142,6 @@ describe('useDragAndDrop', () => {
         ),
       )
 
-      // Task 1 leaves Todo and lands before task 3 (the hovered task) in Doing.
       expect(shape(result.current.columns)).toEqual([
         { id: 1, tasks: [2] },
         { id: 2, tasks: [1, 3] },
@@ -171,7 +162,6 @@ describe('useDragAndDrop', () => {
         ),
       )
 
-      // Same-column ordering is settled in onDragEnd, not here.
       expect(shape(result.current.columns)).toEqual([
         { id: 1, tasks: [1, 2] },
         { id: 2, tasks: [3] },
@@ -216,7 +206,6 @@ describe('useDragAndDrop', () => {
         )
       })
 
-      // Task 1 moves below task 2 → position 2 (1-based).
       expect(shape(result.current.columns)).toEqual([
         { id: 1, tasks: [2, 1] },
         { id: 2, tasks: [3] },
@@ -224,8 +213,7 @@ describe('useDragAndDrop', () => {
       expect(mockPatch).toHaveBeenCalledWith('tasks/1/reorder', {
         new_order: 2,
       })
-      // The optimistic state is authoritative — no full-board refetch is fired,
-      // which is what previously froze dragging until it returned.
+
       expect(mockActiveBoardMutate).not.toHaveBeenCalled()
       expect(result.current.activeTask).toBeNull()
       expect(result.current.isApiProcessing).toBe(false)
@@ -235,7 +223,7 @@ describe('useDragAndDrop', () => {
       const { result } = setup()
 
       act(() => result.current.onDragStart(startTask(makeTask(1), 1)))
-      // onDragOver moves task 1 into Doing first (live preview), as the real UI does.
+
       act(() =>
         result.current.onDragOver(
           dragEvent(
@@ -255,7 +243,6 @@ describe('useDragAndDrop', () => {
         )
       })
 
-      // Task 1 is appended after task 3 in Doing → column 2, position 2.
       expect(shape(result.current.columns)).toEqual([
         { id: 1, tasks: [2] },
         { id: 2, tasks: [3, 1] },
@@ -324,8 +311,6 @@ describe('useDragAndDrop', () => {
         )
       })
 
-      // The optimistic reorder is kept (a snapshot rollback could clobber a
-      // later queued drag); instead we refetch to reconcile with server truth.
       expect(shape(result.current.columns)).toEqual([
         { id: 1, tasks: [2, 1] },
         { id: 2, tasks: [3] },
@@ -352,7 +337,6 @@ describe('useDragAndDrop', () => {
         )
       })
 
-      // Todo (id 1) moves after Doing (id 2) → position 2.
       expect(shape(result.current.columns)).toEqual([
         { id: 2, tasks: [3] },
         { id: 1, tasks: [1, 2] },
@@ -380,7 +364,6 @@ describe('useDragAndDrop', () => {
         )
       })
 
-      // Optimistic reorder is kept; we refetch to reconcile rather than roll back.
       expect(shape(result.current.columns)).toEqual([
         { id: 2, tasks: [3] },
         { id: 1, tasks: [1, 2] },
@@ -392,7 +375,6 @@ describe('useDragAndDrop', () => {
 
   describe('persist queue', () => {
     it('serializes persists — a second drop waits for the first request to settle', async () => {
-      // First reorder hangs until we release it; later calls resolve normally.
       let releaseFirst: (value: unknown) => void = () => {}
       const firstPending = new Promise((resolve) => {
         releaseFirst = resolve
@@ -404,7 +386,6 @@ describe('useDragAndDrop', () => {
 
       const { result } = setup()
 
-      // Drop #1: reorder task 1 within Todo (its request stays pending).
       act(() => result.current.onDragStart(startTask(makeTask(1), 1)))
       await act(async () => {
         result.current.onDragEnd(
@@ -416,7 +397,6 @@ describe('useDragAndDrop', () => {
         )
       })
 
-      // Drop #2: move task 3 into Todo while #1 is still in flight.
       act(() => result.current.onDragStart(startTask(makeTask(3), 2)))
       act(() =>
         result.current.onDragOver(
@@ -437,10 +417,8 @@ describe('useDragAndDrop', () => {
         )
       })
 
-      // Only the first request has fired — the second is queued behind it.
       expect(mockPatch).toHaveBeenCalledTimes(1)
 
-      // Releasing the first lets the queue drain the second.
       await act(async () => {
         releaseFirst({ data: {} })
         await firstPending

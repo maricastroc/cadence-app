@@ -101,8 +101,6 @@ export default function Register() {
     }
   }
 
-  // See login: show the loader while the session probe resolves, never a bare
-  // null, so a slow/cold backend can't leave a blank white screen.
   if (isCheckingAuth) return <LoadingComponent />
 
   return (

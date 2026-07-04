@@ -29,7 +29,6 @@ vi.mock('@/lib/axios', () => ({
   api: { delete: deleteMock, patch: patchMock },
 }))
 
-// Capture the onUndo the hook hands to the toast so tests can trigger it.
 let capturedOnUndo: (() => void) | undefined
 vi.mock('react-hot-toast', () => ({
   toast: {

@@ -57,7 +57,6 @@ export function BoardToolbar({
   useEscapeKey(filter.close, filter.isOpen)
   useEscapeKey(sort.close, sort.isOpen)
 
-  // "/" focuses the search field (skips when already typing somewhere)
   useEffect(() => {
     if (disabled) return
     const onKey = (event: KeyboardEvent) => {

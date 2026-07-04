@@ -52,8 +52,6 @@ export const ChipsWrap = styled.div`
   width: 100%;
 `
 
-// Selection is the ONE signal: a chosen chip goes teal, never its own hue. The
-// tag's colour lives only in the dot, so identity and selection never fight.
 export const Chip = styled.button<{ $color: string; $checked: boolean }>`
   display: inline-flex;
   align-items: center;

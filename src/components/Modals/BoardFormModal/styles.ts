@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 
-// Dashed "Add column" composer reuses the shared sheet primitive.
 export { DashedComposerBtn as AddColumnBtn } from '../Sheet/styles'
 
 export const ColumnsWrapper = styled.div`

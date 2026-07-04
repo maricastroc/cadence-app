@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 
-// Inline loading spinner — inherits the button's text color via currentColor,
-// so it works on every variant, and scales with the button's font size.
 export const ButtonSpinner = styled.span`
   display: inline-block;
   width: 1.05em;

@@ -22,8 +22,6 @@ interface AddTaskModalProps {
   onClose: () => void
 }
 
-// Subtasks are optional, so a new task starts with none — the user adds them
-// on demand via "Add subtask".
 const initialSubtasks: SubtaskProps[] = []
 
 const subtaskSchema = z.object({
@@ -136,8 +134,6 @@ export const useTaskForm = ({
     const newIndex = subtasks.findIndex((s) => String(s.id) === String(over.id))
     if (oldIndex === -1 || newIndex === -1) return
 
-    // The submit payload derives each subtask's `order` from its array index,
-    // so reordering here persists on save (no extra request needed).
     const reordered = arrayMove(subtasks, oldIndex, newIndex)
     setSubtasks(reordered)
     setValue('subtasks', reordered)

@@ -49,7 +49,6 @@ export const lightTheme = {
   'accent-2': '#D6477A',
   'accent-2-soft': 'rgba(214, 71, 122, 0.10)',
 
-  // --- semantic status ---
   'completed-color': '#0E9F73',
   'overdue-color': '#C44A46',
   'due-soon-color': '#B9821A',

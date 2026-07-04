@@ -27,7 +27,6 @@ export function ColumnFormModal({ onClose }: ColumnFormModalProps) {
     resetColumns,
   } = useBoardForm({ isEditing: true, onClose })
 
-  // only allow saving when there's at least one column not already on the board
   const hasNewColumns = () => {
     if (!activeBoard?.columns) return boardColumns.length > 0
 

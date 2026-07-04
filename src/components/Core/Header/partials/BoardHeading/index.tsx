@@ -29,9 +29,6 @@ interface Props {
 export function BoardHeading({ activeBoard, metrics, isSmallerThanSm }: Props) {
   const { isOpen, open, close } = useDisclosure()
 
-  // the boards sheet is a mobile-only affordance — close it when leaving mobile.
-  // `close` is a stable useCallback from useDisclosure, so the effect only runs
-  // when isSmallerThanSm changes.
   useEffect(() => {
     if (!isSmallerThanSm) close()
   }, [isSmallerThanSm, close])

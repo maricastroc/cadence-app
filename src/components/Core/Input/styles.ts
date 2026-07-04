@@ -1,8 +1,5 @@
 import styled from 'styled-components'
 
-// Borderless input: a recessed well defined by a fill darker than its container
-// (field-bg), never an outline. Focus is an accent ring (box-shadow), error is
-// an inset ring — no borders anywhere.
 export const Input = styled.input`
   pointer-events: initial;
   opacity: 1;

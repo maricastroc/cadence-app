@@ -12,11 +12,6 @@ import { ReactNode, useEffect } from 'react'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { LoadingComponent } from '@/components/Shared/LoadingComponent'
 
-// Radix locks <body> scroll while a modal is open, but the board is a nested
-// horizontal scroller (overflow-x) that the body lock doesn't reach — so it can
-// still be panned behind the overlay. Flag <body> while any modal is mounted
-// (ref-counted so stacked/swapped modals don't clear it early) and let CSS lock
-// the board. The count lives on document.body so it survives Fast Refresh.
 function useBodyModalLock() {
   useEffect(() => {
     const body = document.body

@@ -67,7 +67,6 @@ export function TagsModal({ onClose, tags, onDeleteTag, tagsMutate }: Props) {
   const [query, setQuery] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
-  // per-tag usage across the active board (no API change needed)
   const usage = useMemo(() => {
     const map: Record<string, number> = {}
     activeBoard?.columns?.forEach((col) =>

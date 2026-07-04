@@ -1,9 +1,5 @@
 import styled from 'styled-components'
 
-// The card is a two-column flex: a completion toggle outdented to the left, and
-// a single content column (title → tags → progress → meta) that all share one
-// left edge. Depth reads through a top bevel of light + a soft drop; hover lifts
-// the fill, brightens the hairline and floats it 1px. Everything on a 2px grid.
 export const TaskCardContainer = styled.div`
   cursor: grab;
   display: flex;
@@ -62,7 +58,6 @@ export const TaskCardContainer = styled.div`
   }
 `
 
-// The single content column. min-width:0 lets the title ellipsis behave.
 export const CardBody = styled.div`
   display: flex;
   flex-direction: column;
@@ -87,8 +82,6 @@ export const TaskTitle = styled.strong`
   }
 `
 
-// Hollow ring by default; fills with the completed colour + check when done.
-// Quiet at rest, it only asserts itself on hover or once complete.
 export const CompleteToggle = styled.button`
   flex-shrink: 0;
   margin-top: 1px;
@@ -132,9 +125,6 @@ export const TagsContainer = styled.div`
   width: 100%;
 `
 
-// Neutral chip carrying a single dot of the tag's colour. Colour identity lives
-// in the 5px dot; the chip itself stays quiet so a card with 3 tags never turns
-// into a chromatic pile-up.
 export const Tag = styled.span`
   display: inline-flex;
   align-items: center;
@@ -199,9 +189,6 @@ export const InfoItem = styled.div`
   }
 `
 
-// Due-date pill: a plain muted clock + date when there's nothing to flag, tinting
-// into a soft coloured pill once overdue / due soon, or complete. The status
-// rides on the pill so the date stays readable instead of competing with a label.
 export const DueDateBadge = styled.div`
   display: inline-flex;
   align-items: center;

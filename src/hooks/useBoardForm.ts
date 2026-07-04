@@ -39,9 +39,6 @@ const formSchema = z.object({
 
 export type FormData = z.infer<typeof formSchema>
 
-// A board column plus a stable client-side key, so the drag-and-drop list keeps
-// a consistent identity even for not-yet-saved columns (id === null) or columns
-// that share a name. The clientId is never sent to the API.
 type DraftColumn = BoardColumnProps & { clientId: string }
 
 let columnKeySeq = 0

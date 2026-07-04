@@ -1,6 +1,5 @@
 import { darken } from '@/utils/darken'
 
-// Deterministic per-board color so each board reads as its own space (identity)
 const BOARD_COLORS = [
   '#14B8A6',
   '#3B82F6',

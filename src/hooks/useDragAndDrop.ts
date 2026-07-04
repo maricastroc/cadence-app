@@ -20,9 +20,6 @@ type Id = string | number | null | undefined
 
 const sameId = (a: Id, b: Id) => String(a) === String(b)
 
-// Columns and tasks share one DndContext. When dragging a column we must only
-// collide with other columns — otherwise the inner task droppables (which
-// overlap the whole panel) win and the horizontal sort can't resolve a target.
 export const kanbanCollisionDetection: CollisionDetection = (args) => {
   if (args.active.data.current?.type !== 'column') return closestCorners(args)
 
@@ -34,9 +31,6 @@ export const kanbanCollisionDetection: CollisionDetection = (args) => {
   })
 }
 
-// dnd ids are stable strings (`task-<id>` / `column-<id>`), never array
-// positions — so reordering, filtering or sorting the columns can't desync
-// the drag target the way the old positional `droppableId` index did.
 const rawTaskId = (dndId: string) => dndId.replace('task-', '')
 
 export function useDragAndDrop(
@@ -50,39 +44,24 @@ export function useDragAndDrop(
     null,
   )
 
-  // Count of persists still in flight — surfaced as `isApiProcessing` for a
-  // "saving" affordance, but it deliberately no longer gates dragging.
   const [pendingPersists, setPendingPersists] = useState(0)
-
-  // Persists run one-at-a-time in the background. Dragging is never blocked on a
-  // request (a slow backend can't freeze the board), yet the writes stay
-  // serialized so two overlapping reorders can't race on the server, which
-  // shifts sibling positions from the *current* DB order.
   const persistQueue = useRef<Promise<unknown>>(Promise.resolve())
 
   const enqueuePersist = (task: () => Promise<void>) => {
     setPendingPersists((n) => n + 1)
     persistQueue.current = persistQueue.current
       .then(task)
-      // Isolate failures so one rejected write can't break the chain for the
-      // next queued persist (`task` already reports/reconciles its own errors).
       .catch(() => {})
       .finally(() => setPendingPersists((n) => Math.max(0, n - 1)))
   }
-
-  // Mirror of the rendered columns so `onDragEnd` reads the latest state even
-  // after `onDragOver` has moved a task across columns mid-drag.
   const columnsRef = useRef(boardColumns)
   columnsRef.current = boardColumns
 
-  // Captured when a drag starts: the pre-drag snapshot (for rollback) and the
-  // task's origin column (to pick the right endpoint: move vs reorder).
   const dragStart = useRef<{
     columns: BoardColumnProps[]
     columnId: BoardColumnProps['id']
   } | null>(null)
 
-  // Pre-drag column snapshot, captured when a column drag starts (for rollback).
   const columnDragStart = useRef<BoardColumnProps[] | null>(null)
 
   const resolveColumn = (
@@ -122,14 +101,10 @@ export function useDragAndDrop(
     dragStart.current = { columns: boardColumns, columnId }
   }
 
-  // Live preview: when the pointer enters a different column, move the dragged
-  // task into it so the gap follows the cursor across columns.
   const onDragOver = (event: DragOverEvent) => {
     const { active, over } = event
     if (!over) return
 
-    // Columns are a single horizontal list — the sortable strategy animates the
-    // shift on its own, so there's no live cross-container move to mirror here.
     if (active.data.current?.type === 'column') return
 
     const activeId = String(active.id)
@@ -197,8 +172,6 @@ export function useDragAndDrop(
       return
     }
 
-    // Final within-column reorder (the cross-column move already happened in
-    // onDragOver). Only the destination column can change here.
     let columns = current
     if (sameId(destColumn.id, overColumn.id)) {
       const oldIndex = destColumn.tasks.findIndex((t) => sameId(t.id, taskId))
@@ -220,11 +193,9 @@ export function useDragAndDrop(
     const finalColumn = columns.find((c) => sameId(c.id, destColumn.id))
     if (!finalColumn) return
 
-    // 0-based position in the rendered list; the API orders tasks 1-based.
     const newIndex = finalColumn.tasks.findIndex((t) => sameId(t.id, taskId))
     const movedToNewColumn = !sameId(snapshot.columnId, destColumn.id)
 
-    // No-op guard: dropped back where it started.
     if (!movedToNewColumn) {
       const originalIndex = snapshot.columns
         .find((c) => sameId(c.id, snapshot.columnId))
@@ -263,16 +234,11 @@ export function useDragAndDrop(
         }
       } catch (error) {
         handleApiError(error)
-        // The optimistic board already moved the card; can't safely roll back to
-        // a pre-drag snapshot (later drags may have built on it), so pull server
-        // truth — the board-sync effect applies it once no drag is active.
         activeBoardMutate()
       }
     })
   }
 
-  // Single-list horizontal reorder: the final index is the only thing that
-  // changed, so we read it off the post-drag array and persist it 1-based.
   const onColumnDragEnd = (
     active: DragEndEvent['active'],
     over: DragEndEvent['over'],
@@ -285,8 +251,6 @@ export function useDragAndDrop(
     const current = columnsRef.current
     if (!over || !snapshot || !current) return
 
-    // `over` may resolve to a column or to a task inside one — both map back to
-    // the owning column.
     const draggedColumn = resolveColumn(current, String(active.id))
     const targetColumn = resolveColumn(current, String(over.id))
     if (!draggedColumn || !targetColumn) return
@@ -319,12 +283,6 @@ export function useDragAndDrop(
       }
     })
   }
-
-  // A drag can end without a drop — Escape, a lost pointer, or the underlying
-  // list changing mid-drag (e.g. a background board refetch). dnd-kit fires
-  // this instead of onDragEnd, so we mirror the reset here; otherwise the
-  // `activeTask`/`activeColumn` state would stay set, keeping the DragOverlay
-  // ghost mounted and swallowing pointer events so nothing else can be dragged.
   const onDragCancel = () => {
     setActiveTask(null)
     setActiveColumn(null)
@@ -335,8 +293,6 @@ export function useDragAndDrop(
   return {
     activeTask,
     activeColumn,
-    // A persist is in flight — for an optional "saving" hint only; this must not
-    // be used to disable dragging (that reintroduces the freeze on a slow API).
     isApiProcessing: pendingPersists > 0,
     onDragStart,
     onDragOver,

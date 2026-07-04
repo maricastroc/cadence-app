@@ -84,11 +84,8 @@ export function BoardsContextProvider({
     isLoading: isLoadingActiveBoard,
   } = useRequest<{ board: BoardProps }>(activeBoardRequest)
 
-  // Only the *initial* fetch — background revalidations (mount, reconnect,
-  // mutate) keep this false so the board stops flashing the full-screen loader.
   const isLoading = isLoadingBoards || isLoadingActiveBoard
 
-  // Guards the one-shot auto-activation so it can't fire on every re-render.
   const autoActivatingRef = useRef(false)
 
   useEffect(() => {
@@ -97,8 +94,6 @@ export function BoardsContextProvider({
   }, [boardsData])
 
   useEffect(() => {
-    // Wait until boards are loaded and the active-board probe has settled,
-    // otherwise we'd clear the selection (or auto-activate) mid-fetch.
     if (!boards || isLoadingActiveBoard || autoActivatingRef.current) return
 
     const activeId = activeBoardData?.board?.id
@@ -107,24 +102,16 @@ export function BoardsContextProvider({
         ? boards.find((b) => String(b.id) === String(activeId))
         : undefined
 
-    // The active board from the API already carries its columns → use it
-    // directly. (The board view reads `activeBoard.columns`; the `/boards`
-    // list endpoint omits columns, so a list item alone isn't enough.)
     if (matched && activeBoardData?.board?.columns) {
       setActiveBoard(activeBoardData.board)
       return
     }
 
-    // Genuinely no boards → let the "create your first board" empty state show.
     if (boards.length === 0) {
       setActiveBoard(undefined)
       return
     }
 
-    // Boards exist but we don't have a board-with-columns yet (none active, the
-    // active one was deleted, or the probe returned one without columns).
-    // Activate the target board to fetch its full detail with columns, so the
-    // user lands on a real board instead of the empty state.
     const targetId = matched ? activeId : boards[0].id
     autoActivatingRef.current = true
     api
@@ -134,7 +121,6 @@ export function BoardsContextProvider({
         setActiveBoard({ ...board, columns: board.columns ?? [] })
       })
       .catch(() => {
-        // Last resort: land on the first board even without its columns yet.
         setActiveBoard({ ...boards[0], columns: boards[0].columns ?? [] })
       })
       .finally(() => {
@@ -154,9 +140,6 @@ export function BoardsContextProvider({
     [activeBoardMutate],
   )
 
-  // Memoize the context value so consumers (Header, Sidebar, every TaskCard and
-  // BoardColumn) only re-render when a value they read actually changes, not on
-  // every provider render.
   const value = useMemo(
     () => ({
       enableScrollFeature,
